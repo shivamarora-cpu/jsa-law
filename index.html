@@ -1,0 +1,4247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vikram Raghani — JSA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Stack+Sans+Notch:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────────── */
+    :root {
+      --justice-blue:    #1134D1;
+      --counsel-crimson: #C90017;
+      --precedent-grey:  #8B8B8B;
+      --judicial-ink:    #0A0A0A;
+      --subtext:         #3F3F3F;
+      --stroke:          #E4E4E4;
+      --clean-slate:     #F7F7F7;
+      --white:           #FFFFFF;
+      --light-card-text: #E9E9E9;
+
+      /* Typography */
+      --font-heading: 'Stack Sans Notch', serif;
+      --font-body:    'Plus Jakarta Sans', sans-serif;
+
+      /* Spacing */
+      --page-pad: 64px;
+      --content-width: 1312px;
+    }
+
+    /* ─────────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--judicial-ink);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ─────────────────────────────────────────────
+       UTILITY
+    ───────────────────────────────────────────── */
+    .page-wrap {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .content-wrap {
+      padding-left: var(--page-pad);
+      padding-right: var(--page-pad);
+    }
+    .label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      line-height: normal;
+    }
+
+    /* ─────────────────────────────────────────────
+       MAIN NAV
+    ───────────────────────────────────────────── */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--judicial-ink);
+    }
+    .main-nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 96px;
+      padding: 24px var(--page-pad);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .main-nav__logo img {
+      height: 34.6px;
+      width: auto;
+    }
+    .main-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .main-nav__links a {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.168px;
+      text-transform: uppercase;
+      color: var(--judicial-ink);
+      white-space: nowrap;
+    }
+    .main-nav__link-drop {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .main-nav__link-drop img {
+      width: 12px;
+      height: 12px;
+    }
+    .main-nav__search {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--judicial-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .main-nav__search img {
+      width: 24px;
+      height: 24px;
+    }
+    /* Mobile nav */
+    .main-nav__mobile {
+      display: none;
+      align-items: center;
+      gap: 16px;
+    }
+    .main-nav__hamburger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+    .hamburger-icon {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5px;
+      width: 12px;
+    }
+    .hamburger-icon span {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: var(--judicial-ink);
+    }
+
+    /* ─────────────────────────────────────────────
+       STICKY SUB-NAV
+    ───────────────────────────────────────────── */
+    .sub-nav {
+      position: sticky;
+      top: 96px; /* sits right below the fixed main nav */
+      z-index: 90;
+      background: var(--white);
+      width: 100%;
+      border-bottom: 1px solid #0A0A0A;
+    }
+    /* Hidden on desktop, shown only on mobile */
+    .sub-nav__trigger { display: none; }
+    .sub-nav__dropdown { display: none; }
+
+    .sub-nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      padding: 0 var(--page-pad);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .sub-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex: 1;
+    }
+    .sub-nav__link {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.168px;
+      text-transform: uppercase;
+      color: var(--judicial-ink);
+      white-space: nowrap;
+      padding-bottom: 6px;
+    }
+    .sub-nav__link.active {
+      border-bottom: 2px solid var(--justice-blue);
+    }
+    /* CTA button — two-track slide like hero */
+    .sub-nav__cta {
+      position: relative;
+      height: 56px;
+      width: 160px;
+      overflow: hidden;
+      cursor: pointer;
+      border: none;
+      flex-shrink: 0;
+      background: transparent;
+    }
+    .sub-nav__cta__bg-track,
+    .sub-nav__cta__text-track {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sub-nav__cta__bg-track { z-index: 0; }
+    .sub-nav__cta__text-track { z-index: 1; }
+    /* Enter */
+    .sub-nav__cta.btn-enter .sub-nav__cta__bg-track {
+      animation: ctaBgIn 0.75s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    .sub-nav__cta.btn-enter .sub-nav__cta__text-track {
+      animation: ctaTextIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.08s forwards;
+    }
+    /* Leave */
+    .sub-nav__cta.btn-leave .sub-nav__cta__bg-track {
+      animation: ctaBgOut 0.65s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    .sub-nav__cta.btn-leave .sub-nav__cta__text-track {
+      animation: ctaTextOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes ctaBgIn   { 0%{transform:translateY(0)}    100%{transform:translateY(-56px)} }
+    @keyframes ctaBgOut  { 0%{transform:translateY(-56px)} 100%{transform:translateY(0)} }
+    @keyframes ctaTextIn { 0%{transform:translateY(0)}    100%{transform:translateY(-56px)} }
+    @keyframes ctaTextOut{ 0%{transform:translateY(-56px)} 100%{transform:translateY(0)} }
+    .sub-nav__cta__bg-state {
+      height: 56px;
+      flex-shrink: 0;
+    }
+    .sub-nav__cta__bg-state--blue  { background: var(--justice-blue); }
+    .sub-nav__cta__bg-state--black { background: var(--judicial-ink); }
+    .sub-nav__cta__text-state {
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+    }
+    .sub-nav__cta__arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .sub-nav__cta__divider {
+      width: 0;
+      height: 16px;
+      border-left: 1px solid rgba(247,247,247,0.35);
+    }
+    .sub-nav__cta__text-state span {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--clean-slate);
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────────
+       HERO SECTION
+    ───────────────────────────────────────────── */
+    .hero {
+      margin-top: 96px; /* main nav height */
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+    .hero__inner {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 0;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 var(--page-pad);
+      position: relative;
+    }
+    .hero__left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 620px;
+      flex-shrink: 0;
+    }
+    .hero__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero__eyebrow-line {
+      width: 32px;
+      height: 2px;
+      background: var(--counsel-crimson);
+      flex-shrink: 0;
+    }
+    .hero__eyebrow-text {
+      color: var(--judicial-ink);
+      font-size: 16px;
+    }
+    .hero__name-wrap {
+      position: relative;
+      width: 434px;
+      margin-top: 28px;
+    }
+    .hero__name {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 104px;
+      line-height: 0.85;
+      color: var(--judicial-ink);
+    }
+    .hero__name-line2 {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .hero__name-dot {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: var(--counsel-crimson);
+      flex-shrink: 0;
+      margin-bottom: 0.075em;
+      opacity: 0;
+    }
+    body.loaded .hero__name-dot {
+      animation: heroFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1s forwards;
+    }
+    .hero__title {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1;
+      color: var(--subtext);
+      margin-top: 28px;
+      width: 445px;
+    }
+    .hero__bio {
+      margin-top: 40px;
+      width: 533px;
+    }
+    .hero__bio-text {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--subtext);
+    }
+    .hero__contacts {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      margin-top: 16px;
+    }
+    .hero__contact-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      padding-bottom: 2px;
+      position: relative;
+    }
+    /* Animated underline */
+    .hero__contact-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--justice-blue);
+      transform-origin: left center;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hero__contact-link:hover::after {
+      transform-origin: right center;
+      animation: underline-slide 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes underline-slide {
+      0%   { transform: scaleX(1); transform-origin: right center; }
+      50%  { transform: scaleX(0); transform-origin: right center; }
+      51%  { transform: scaleX(0); transform-origin: left center; }
+      100% { transform: scaleX(1); transform-origin: left center; }
+    }
+    .hero__contact-link img {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .hero__contact-link span {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 21.6px;
+      color: var(--judicial-ink);
+      white-space: nowrap;
+    }
+    .hero__practice-areas {
+      margin-top: 40px;
+    }
+    .hero__practice-label {
+      color: var(--judicial-ink);
+      margin-bottom: 16px;
+    }
+    .hero__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+    /* Link icon — visible on both desktop and mobile */
+    .hero__tag-icon {
+      display: block;
+      width: 16px;
+      height: auto;
+      flex-shrink: 0;
+      /* Tint to justice blue */
+      filter: brightness(0) saturate(100%) invert(18%) sepia(87%) saturate(3227%) hue-rotate(221deg) brightness(97%) contrast(97%);
+      transition: filter 0.35s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .hero__tag:hover .hero__tag-icon { filter: brightness(0) invert(1); }
+    .hero__tag {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      height: 36px;
+      padding: 10px 12px 10px 16px;
+      border: 1.5px solid var(--justice-blue);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--justice-blue);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: color 0.35s ease;
+    }
+    .hero__tag::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--justice-blue);
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+    }
+    .hero__tag:hover::before { transform: translateX(0); }
+    .hero__tag:hover { color: var(--white); }
+    .hero__tag span { position: relative; z-index: 1; }
+
+    /* Hero right */
+    .hero__right {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    .hero__image-wrap {
+      position: relative;
+      width: 533px;
+      height: 634px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .hero__image-wrap > img.hero__photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero__top-right-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .hero__vector {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 80px;
+      height: 77px;
+    }
+    .hero__vcard-btn {
+      position: absolute !important;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      width: 277px;
+      height: 64px;
+      border: none;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      background: transparent;
+    }
+    /* Button: separate bg + text tracks */
+    .hero__vcard-btn__bg-track,
+    .hero__vcard-btn__text-track {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero__vcard-btn__bg-track { z-index: 0; }
+    .hero__vcard-btn__text-track { z-index: 1; }
+
+    /* Bg track — enter */
+    .hero__vcard-btn.btn-enter .hero__vcard-btn__bg-track {
+      animation: bg-in 0.75s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    @keyframes bg-in {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-64px); }
+    }
+    /* Bg track — leave */
+    .hero__vcard-btn.btn-leave .hero__vcard-btn__bg-track {
+      animation: bg-out 0.65s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    @keyframes bg-out {
+      0%   { transform: translateY(-64px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* Text track — enter */
+    .hero__vcard-btn.btn-enter .hero__vcard-btn__text-track {
+      animation: text-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.08s forwards;
+    }
+    @keyframes text-in {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-64px); }
+    }
+    /* Text track — leave */
+    .hero__vcard-btn.btn-leave .hero__vcard-btn__text-track {
+      animation: text-out 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes text-out {
+      0%   { transform: translateY(-64px); }
+      100% { transform: translateY(0); }
+    }
+
+    .hero__vcard-btn__bg-state {
+      height: 64px;
+      flex-shrink: 0;
+    }
+    .hero__vcard-btn__bg-state--blue  { background: #1134D1; }
+    .hero__vcard-btn__bg-state--black { background: #0A0A0A; }
+    .hero__vcard-btn__bg-state--gray  { background: #3F3F3F; }
+
+    .hero__vcard-btn__text-state {
+      height: 64px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+    }
+    .hero__vcard-btn .btn-arrow {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .hero__vcard-btn .btn-divider {
+      width: 0;
+      height: 18px;
+      border-left: 1px solid rgba(247,247,247,0.35);
+    }
+    .hero__vcard-btn span {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--clean-slate);
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────────
+       BIO BLUE BAND
+    ───────────────────────────────────────────── */
+    .bio-band {
+      position: relative;
+      background: var(--justice-blue);
+      width: 100%;
+      overflow: hidden;
+    }
+    .bio-band__pattern {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 57.38%;
+      pointer-events: none;
+    }
+    .bio-band__pattern img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .bio-band__grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      padding: 104px 64px 128px;
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .bio-band__main-text {
+      grid-column: 1 / 12;
+      grid-row: 1;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 44px;
+      line-height: 1.2;
+      color: var(--clean-slate);
+    }
+    .bio-band__small-text {
+      grid-column: 8 / 13;
+      grid-row: 2;
+      margin-top: 128px;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--clean-slate);
+    }
+    .bio-band__small-p2 { margin-top: 16px; }
+    /* Read more hidden on desktop */
+    .bio-band__read-more { display: none; }
+
+    /* Staircase steps */
+    .bio-band__steps {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 708px;
+      height: 366px;
+      pointer-events: none;
+    }
+    .bio-band__step {
+      position: absolute;
+      background: var(--white);
+      left: 0;
+      height: 122px;
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .bio-band__step--1 { width: 708px; bottom: 0; }
+    .bio-band__step--2 { width: 485px; bottom: 122px; }
+    .bio-band__step--3 { width: 263px; bottom: 244px; }
+    /* Triggered on scroll-in — bottom to top, staggered */
+    .bio-band.steps-in .bio-band__step--1 { transform: scaleX(1); transition-delay: 0s; }
+    .bio-band.steps-in .bio-band__step--2 { transform: scaleX(1); transition-delay: 0.2s; }
+    .bio-band.steps-in .bio-band__step--3 { transform: scaleX(1); transition-delay: 0.4s; }
+
+    /* ─────────────────────────────────────────────
+       KEY TRANSACTIONS
+    ───────────────────────────────────────────── */
+    .transactions {
+      padding: 104px var(--page-pad);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .section-heading {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 64px;
+      line-height: 0.85;
+      color: var(--judicial-ink);
+      margin-bottom: 80px;
+    }
+    .transactions__body {
+      display: flex;
+      gap: 0;
+    }
+    .transactions__filters {
+      width: 310px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 4px;
+    }
+    .transactions__filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.2;
+      color: var(--precedent-grey);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-align: left;
+      transition: color 0.25s ease;
+    }
+    .transactions__filter:hover { color: var(--justice-blue); }
+    .transactions__filter.active { color: var(--justice-blue); }
+    /* Arrow — hidden by default, slides in from left when active */
+    .transactions__filter-arrow {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      width: 20px;
+      height: 16px;
+    }
+    .transactions__filter-arrow img {
+      width: 100%;
+      height: auto;
+    }
+    .transactions__filter.active .transactions__filter-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .transactions__list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .transaction-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .transaction-item__meta {
+      width: 199px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding-top: 4px;
+    }
+    .transaction-item__year {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--precedent-grey);
+    }
+    .transaction-item__type {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--counsel-crimson);
+    }
+    .transaction-item__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .transaction-item__title {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.2;
+      color: var(--judicial-ink);
+    }
+    .transaction-item__desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--subtext);
+    }
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 4px;
+      background: none;
+      border: none;
+      position: relative;
+      cursor: pointer;
+      width: fit-content;
+      align-self: flex-start;
+    }
+    .read-more::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--justice-blue);
+    }
+    .read-more:hover::after {
+      animation: underline-slide 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .read-more__arrow {
+      width: 10px;
+      height: 10px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .read-more:hover .read-more__arrow {
+      transform: rotate(90deg);
+    }
+    /* Truncated transaction description */
+    .transaction-item__desc--clamped {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: none;
+    }
+    .transaction-item__desc--clamped.expanded {
+      display: block;
+      overflow: visible;
+    }
+    .read-more span {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--judicial-ink);
+      line-height: 21.6px;
+    }
+    .transaction-divider {
+      height: 1px;
+      background: var(--stroke);
+      width: 100%;
+    }
+    .btn-show-more {
+      position: relative;
+      width: 345px;
+      height: 64px;
+      border: 0.7px solid var(--justice-blue);
+      overflow: hidden;
+      cursor: pointer;
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .btn-show-more__bg-track,
+    .btn-show-more__text-track {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .btn-show-more__bg-track { z-index: 0; }
+    .btn-show-more__text-track { z-index: 1; }
+    /* Enter */
+    .btn-show-more.btn-enter .btn-show-more__bg-track {
+      animation: smBgIn 0.75s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    .btn-show-more.btn-enter .btn-show-more__text-track {
+      animation: smTextIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.08s forwards;
+    }
+    /* Leave */
+    .btn-show-more.btn-leave .btn-show-more__bg-track {
+      animation: smBgOut 0.65s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    .btn-show-more.btn-leave .btn-show-more__text-track {
+      animation: smTextOut 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes smBgIn   { 0%{transform:translateY(0)}    100%{transform:translateY(-64px)} }
+    @keyframes smBgOut  { 0%{transform:translateY(-64px)} 100%{transform:translateY(0)} }
+    @keyframes smTextIn { 0%{transform:translateY(0)}    100%{transform:translateY(-64px)} }
+    @keyframes smTextOut{ 0%{transform:translateY(-64px)} 100%{transform:translateY(0)} }
+    .btn-show-more__bg-state {
+      height: 64px;
+      flex-shrink: 0;
+    }
+    .btn-show-more__bg-state--white { background: var(--white); }
+    .btn-show-more__bg-state--blue  { background: var(--justice-blue); }
+    .btn-show-more__text-state {
+      height: 64px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-show-more__arrow {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Tint to #1134D1 blue */
+      filter: brightness(0) saturate(100%) invert(18%) sepia(87%) saturate(3227%) hue-rotate(221deg) brightness(97%) contrast(97%);
+    }
+    .btn-show-more.btn-expanded .btn-show-more__arrow { transform: rotate(180deg); }
+    .btn-show-more__text-state--hover .btn-show-more__arrow {
+      filter: brightness(0) invert(1);
+    }
+    .btn-show-more__divider {
+      width: 0;
+      height: 18px;
+      border-left: 1px solid rgba(17,52,209,0.35);
+    }
+    .btn-show-more__text-state--hover .btn-show-more__divider {
+      border-color: rgba(255,255,255,0.35);
+    }
+    .btn-show-more__text-state span {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--justice-blue);
+      white-space: nowrap;
+    }
+    .btn-show-more__text-state--hover span {
+      color: var(--white);
+    }
+    /* Hidden transaction items */
+    .transaction-item--hidden { display: none; }
+    .transaction-divider--hidden { display: none; }
+
+    /* ─────────────────────────────────────────────
+       ACCOLADES & RANKINGS
+    ───────────────────────────────────────────── */
+    .accolades {
+      background: var(--clean-slate);
+      padding: 104px 63px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .accolades__heading { margin-bottom: 80px; }
+    /* Testimonial appear animation */
+    .testimonial__quote,
+    .testimonial__attribution,
+    .testimonial__nav {
+      opacity: 0;
+      transform: translateY(40px) skewY(4deg);
+    }
+    .testimonial.section-in .testimonial__quote {
+      animation: cardReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
+    }
+    .testimonial.section-in .testimonial__attribution {
+      animation: cardReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
+    }
+    .testimonial.section-in .testimonial__nav {
+      animation: cardReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.24s forwards;
+    }
+
+    /* Card appear animation — only first 6 start hidden */
+    .accolade-card:nth-child(-n+6) {
+      opacity: 0;
+      transform: translateY(40px) skewY(4deg);
+    }
+    .accolades.cards-in .accolade-card:nth-child(-n+6) {
+      animation: cardReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    /* Stagger via nth-child */
+    .accolades.cards-in .accolade-card:nth-child(1)  { animation-delay: 0.00s; }
+    .accolades.cards-in .accolade-card:nth-child(2)  { animation-delay: 0.08s; }
+    .accolades.cards-in .accolade-card:nth-child(3)  { animation-delay: 0.16s; }
+    .accolades.cards-in .accolade-card:nth-child(4)  { animation-delay: 0.24s; }
+    .accolades.cards-in .accolade-card:nth-child(5)  { animation-delay: 0.32s; }
+    .accolades.cards-in .accolade-card:nth-child(6)  { animation-delay: 0.40s; }
+    @keyframes cardReveal {
+      from { opacity: 0; transform: translateY(40px) skewY(4deg); }
+      to   { opacity: 1; transform: translateY(0) skewY(0deg); }
+    }
+    .accolades__scrollbar-track { display: none; }
+    /* Show more accolades button */
+    #btn-show-more-accolades {
+      margin-top: 48px;
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #btn-show-more-accolades .btn-show-more__bg-state--white { background: #F7F7F7; }
+    #btn-show-more-accolades .btn-show-more__bg-state--blue  { background: var(--justice-blue); }
+    #btn-show-more-accolades .btn-show-more__text-state--default span { color: var(--justice-blue); }
+    #btn-show-more-accolades .btn-show-more__text-state--hover span  { color: var(--white); }
+    #btn-show-more-accolades .btn-show-more__arrow {
+      filter: brightness(0) saturate(100%) invert(18%) sepia(87%) saturate(3227%) hue-rotate(221deg) brightness(97%) contrast(97%);
+    }
+    #btn-show-more-accolades .btn-show-more__text-state--hover .btn-show-more__arrow {
+      filter: brightness(0) invert(1);
+    }
+    #btn-show-more-accolades .btn-show-more__divider { border-color: rgba(17,52,209,0.35); }
+    #btn-show-more-accolades .btn-show-more__text-state--hover .btn-show-more__divider { border-color: rgba(255,255,255,0.35); }
+    .publications__scrollbar-track { display: none; }
+    .pub-card__read-more { display: none; }
+    .accolades__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .accolade-card {
+      background: var(--justice-blue);
+      height: 304px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .accolade-card__inner {
+      display: contents; /* transparent wrapper — front is the card */
+    }
+    .accolade-card__front {
+      display: contents; /* transparent — card itself is the face */
+    }
+    .accolade-card__back {
+      display: none; /* hidden on desktop */
+    }
+    .accolade-card__back-desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #3F3F3F;
+    }
+    /* Read more button hidden on desktop */
+    .accolade-card__more-btn { display: none; }
+    .accolade-card__years {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--clean-slate);
+      white-space: nowrap;
+    }
+    .accolade-card__bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .accolade-card__name {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.2;
+      color: var(--clean-slate);
+      /* Fixed 2-line height so all names take the same space */
+      min-height: calc(32px * 1.2 * 2);
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .accolade-card__desc {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--light-card-text);
+      /* Always exactly 3 lines — reserves space even for short text */
+      height: calc(16px * 1.6 * 3);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ─────────────────────────────────────────────
+       TESTIMONIAL / QUOTE
+    ───────────────────────────────────────────── */
+    .testimonial {
+      padding: 104px var(--page-pad);
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .testimonial__inner {
+      max-width: 1090px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    /* Slider viewport — grid stack so height never jumps */
+    .testimonial__slider {
+      display: grid;
+      overflow: hidden;
+    }
+    .testimonial__slide {
+      grid-area: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      /* Transform leads, opacity lags slightly behind */
+      transition: transform 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+                  opacity 0.45s ease 0.1s;
+    }
+    .testimonial__slide.active {
+      opacity: 1;
+      transform: translateX(0) !important;
+      pointer-events: auto;
+    }
+    /* Direction classes set before transition */
+    .testimonial__slide.from-right { transform: translateX(120px); }
+    .testimonial__slide.from-left  { transform: translateX(-120px); }
+    .testimonial__slide.to-left    { transform: translateX(-120px); }
+    .testimonial__slide.to-right   { transform: translateX(120px); }
+    .testimonial__quote {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 44px;
+      line-height: 1.2;
+      color: var(--judicial-ink);
+    }
+    .testimonial__attribution {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial__attribution-line {
+      width: 32px;
+      height: 2px;
+      background: var(--justice-blue);
+      flex-shrink: 0;
+    }
+    .testimonial__attribution-text {
+      color: var(--judicial-ink);
+    }
+    .testimonial__nav {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .testimonial__nav-btn {
+      width: 60px;
+      height: 60px;
+      border: 1.5px solid var(--justice-blue);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.25s ease;
+    }
+    .testimonial__nav-btn img {
+      width: 20px;
+      height: auto;
+      transition: filter 0.25s ease;
+    }
+    .testimonial__nav-btn:hover {
+      background: var(--justice-blue);
+    }
+    .testimonial__nav-btn:hover img {
+      filter: brightness(0) invert(1);
+    }
+
+    /* ─────────────────────────────────────────────
+       QUALIFICATIONS + MEMBERSHIPS
+    ───────────────────────────────────────────── */
+    .qual-memb {
+      background: var(--clean-slate);
+      padding: 104px 63px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+    .qual-memb__pattern {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 519px;
+      height: 344px;
+      pointer-events: none;
+    }
+    .qual-memb__pattern img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .qual-memb__container {
+      max-width: 1314px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 104px;
+    }
+
+    /* Qualifications */
+    .qual__heading {
+      margin-bottom: 48px;
+    }
+    .qual-row {
+      border-bottom: 1px solid var(--stroke);
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .qual-row__left {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .qual-row__degree {
+      color: var(--counsel-crimson);
+    }
+    .qual-row__institution {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 1.25;
+      color: var(--judicial-ink);
+      width: 475px;
+    }
+    .qual-row__year {
+      color: var(--judicial-ink);
+    }
+
+    /* Memberships */
+    .memb__heading {
+      margin-bottom: 48px;
+    }
+    .memb__items {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+    .memb-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 200px;
+    }
+    .memb-item img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+    .memb-item__name {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--judicial-ink);
+      text-align: center;
+      width: 200px;
+    }
+
+    /* ─────────────────────────────────────────────
+       PUBLICATIONS & INSIGHTS
+    ───────────────────────────────────────────── */
+    .publications {
+      padding: 104px var(--page-pad);
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+    /* Hide default cursor over pub cards */
+    .pub-card, .pub-card * {
+      cursor: none;
+    }
+    /* Custom cursor */
+    .pub-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 84px;
+      height: 84px;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .pub-cursor.visible { opacity: 1; }
+    .pub-cursor img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .publications__grid {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .pub-card {
+      background: var(--clean-slate);
+      width: 420px;
+      height: 400px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      transition: background 0.3s ease;
+    }
+    .pub-card:hover { background: #EBEBEB; }
+    .pub-card__top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pub-card__category {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--counsel-crimson);
+      white-space: nowrap;
+    }
+    .pub-card__title {
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.25;
+      color: var(--judicial-ink);
+    }
+    .pub-card__excerpt {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--subtext);
+    }
+    .pub-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pub-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pub-card__type {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--subtext);
+      white-space: nowrap;
+    }
+    .pub-card__dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--subtext);
+      flex-shrink: 0;
+    }
+    .pub-card__date {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--subtext);
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    .site-footer {
+      background: var(--judicial-ink);
+      padding: 64px var(--page-pad) 40px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+    .site-footer__decor-logo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 301px;
+      height: 298px;
+      pointer-events: none;
+    }
+    .site-footer__decor-logo img {
+      width: 100%;
+      height: 100%;
+    }
+    .site-footer__decor-br {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      pointer-events: none;
+    }
+    .site-footer__decor-br img { display: block; }
+    .site-footer__decor-pattern {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) scaleY(-1) rotate(180deg);
+      width: 550px;
+      height: 459px;
+      opacity: 0.08;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .site-footer__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 136px;
+      position: relative;
+      z-index: 1;
+    }
+    .site-footer__brand {
+      display: flex;
+      flex-direction: column;
+      gap: 72px;
+      width: 421px;
+      flex-shrink: 0;
+    }
+    .site-footer__logo img {
+      width: 144px;
+      height: auto;
+    }
+    .site-footer__newsletter {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .site-footer__newsletter-label {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--clean-slate);
+    }
+    .site-footer__email-row {
+      border: 1px solid rgba(247,247,247,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      gap: 10px;
+    }
+    .site-footer__email-input {
+      background: none;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--precedent-grey);
+      flex: 1;
+      min-width: 0;
+    }
+    .site-footer__email-input::placeholder { color: var(--precedent-grey); }
+    .site-footer__email-send img {
+      width: 20px;
+      height: auto;
+      flex-shrink: 0;
+    }
+    .site-footer__nav {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    .footer-nav-col {
+      width: 199px;
+      flex-shrink: 0;
+    }
+    .footer-nav-col:last-child { width: 198px; }
+    .footer-nav-col__heading {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--clean-slate);
+      margin-bottom: 32px;
+      white-space: nowrap;
+    }
+    .footer-nav-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .footer-nav-col a {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--precedent-grey);
+      white-space: nowrap;
+    }
+    .site-footer__bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+    .site-footer__social {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .site-footer__social a {
+      display: block;
+      width: 50px;
+      height: 50px;
+    }
+    .site-footer__social img {
+      width: 100%;
+      height: 100%;
+    }
+    .site-footer__legal {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .site-footer__legal-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .site-footer__legal-links a {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.2;
+      color: var(--precedent-grey);
+    }
+    .site-footer__legal-divider {
+      width: 0;
+      height: 16px;
+      border-left: 1px solid var(--precedent-grey);
+    }
+    .site-footer__copyright {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.2;
+      color: var(--precedent-grey);
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────────
+       BUTTON HOVER STATES (fill animation)
+    ───────────────────────────────────────────── */
+    .btn-fill {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .btn-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--judicial-ink);
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+    }
+    .btn-fill:hover::after { transform: translateY(0); }
+    .btn-fill span, .btn-fill img { position: relative; z-index: 1; }
+    .btn-fill:hover span { color: var(--clean-slate); }
+
+
+    /* ─────────────────────────────────────────────
+       MOBILE — 375px
+    ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root {
+        --page-pad: 16px;
+      }
+
+      /* Main nav mobile */
+      .main-nav__links,
+      .main-nav__search { display: none; }
+      .main-nav__mobile { display: flex; align-items: center; }
+      .main-nav__menu-svg { width: 67px; height: auto; display: block; }
+      .main-nav__inner { height: 72px; padding: 0 16px; }
+
+      /* Hero mobile */
+      .hero { margin-top: 72px; padding: 0; }
+      .hero__inner {
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+      }
+      .hero__right {
+        order: -1;
+        width: 100%;
+        position: relative;
+      }
+      .hero__image-wrap {
+        width: 100%;
+        height: 446px;
+      }
+      .hero__vector { display: none; }
+      .hero__vcard-btn {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 234px;
+        height: 56px;
+      }
+      /* Disable track animations on mobile */
+      .hero__vcard-btn.btn-enter .hero__vcard-btn__bg-track,
+      .hero__vcard-btn.btn-leave .hero__vcard-btn__bg-track,
+      .hero__vcard-btn.btn-enter .hero__vcard-btn__text-track,
+      .hero__vcard-btn.btn-leave .hero__vcard-btn__text-track {
+        animation: none !important;
+      }
+      .hero__vcard-btn__bg-state,
+      .hero__vcard-btn__text-state { height: 56px; }
+      .hero__vcard-btn__text-state { padding: 0 18px; }
+      .hero__vcard-btn .btn-arrow { width: 11px; height: auto; }
+      .hero__vcard-btn span { font-size: 14px; }
+      .hero__left {
+        width: 100%;
+        padding: 56px 16px 72px;
+        gap: 24px;
+      }
+      .hero__name-wrap { width: 100%; margin-top: 20px; }
+      .hero__name {
+        font-size: 56px;
+        white-space: normal;
+      }
+      .hero__name-dot { right: 0; bottom: -10px; width: 12px; height: 12px; }
+      .hero__title { font-size: 16px; width: 100%; margin-top: 20px; }
+      .hero__bio { margin-top: 24px; width: auto; }
+      .hero__bio-text { font-size: 16px; }
+      .hero__contacts { display: flex; flex-direction: row; gap: 24px; }
+      .hero__contact-link span { font-size: 13px; }
+      .hero__practice-areas { margin-top: 24px; }
+      .hero__tags {
+        display: flex;
+        grid-template-columns: max-content max-content;
+        gap: 12px;
+        justify-content: start;
+      }
+      .hero__tag {
+        font-size: 13px;
+        height: auto;
+        padding: 12px 14px;
+        justify-content: space-between;
+        gap: 8px;
+        white-space: nowrap;
+      }
+      .hero__tag-icon {
+        display: block;
+        width: 14px;
+        height: auto;
+        flex-shrink: 0;
+      }
+
+      /* Bio band mobile */
+      .bio-band__pattern { display: none; }
+      .bio-band__grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 72px 16px 242px;
+      }
+      .bio-band__steps {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 300px;
+        height: 174px;
+        pointer-events: none;
+      }
+      .bio-band__step--1 { width: 286px; height: 58px; bottom: 0; }
+      .bio-band__step--2 { width: 197px; height: 58px; bottom: 58px; }
+      .bio-band__step--3 { width: 106px; height: 58px; bottom: 116px; top: auto; }
+      .bio-band__main-text {
+        grid-column: 1 / 2;
+        grid-row: 1;
+        font-size: 24px;
+        margin-bottom: 32px;
+      }
+      .bio-band__small-text {
+        grid-column: 1 / 2;
+        grid-row: 2;
+        margin-top: 0;
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .bio-band__small-p2 { display: none; }
+      .bio-band__small-p2.expanded { display: block; }
+      /* Read more button — white on blue */
+      .bio-band__read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: none;
+        border: none;
+        padding-bottom: 4px;
+        position: relative;
+        cursor: pointer;
+        width: fit-content;
+      }
+      .bio-band__read-more::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--white);
+      }
+      .bio-band__read-more:hover::after {
+        animation: underline-slide 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .bio-band__read-more .read-more__arrow {
+        width: 10px; height: 10px;
+        filter: brightness(0) invert(1);
+        transition: transform 0.3s ease;
+      }
+      .bio-band__read-more:hover .read-more__arrow { transform: rotate(90deg); }
+      .bio-band__read-more span {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: var(--white);
+        line-height: 21.6px;
+      }
+
+      /* Sub nav mobile */
+      .sub-nav { top: 73px; border-bottom: 1px solid #0A0A0A; }
+      .sub-nav__inner { padding: 0 16px; height: 72px; display: flex; align-items: center; justify-content: space-between; position: relative; }
+      /* Hide scrollable links on mobile — replaced by dropdown */
+      .sub-nav__links { display: none; }
+      /* Mobile trigger */
+      .sub-nav__trigger {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.168px;
+        text-transform: uppercase;
+        color: var(--judicial-ink);
+        padding: 0;
+      }
+      .sub-nav__trigger-arrow {
+        width: 12px;
+        height: 12px;
+        transition: transform 0.25s ease;
+      }
+      .sub-nav__trigger[aria-expanded="true"] .sub-nav__trigger-arrow {
+        transform: rotate(180deg);
+      }
+      /* Dropdown panel */
+      .sub-nav__dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border-bottom: 1px solid #0A0A0A;
+        flex-direction: column;
+        z-index: 89;
+      }
+      .sub-nav__dropdown.open { display: flex; }
+      .sub-nav__dropdown-link {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.168px;
+        text-transform: uppercase;
+        color: var(--judicial-ink);
+        padding: 18px 16px;
+        border-bottom: 1px solid var(--stroke);
+        text-decoration: none;
+      }
+      .sub-nav__dropdown-link:last-child { border-bottom: none; }
+      /* Show CTA on mobile — static blue, no animation */
+      .sub-nav__cta {
+        display: block !important;
+        position: relative;
+        width: auto;
+        height: auto;
+        overflow: hidden;
+      }
+      /* bg-track: absolute fill, blue state only */
+      .sub-nav__cta__bg-track {
+        position: absolute;
+        inset: 0;
+        animation: none !important;
+        transform: none !important;
+      }
+      .sub-nav__cta__bg-state { height: 100%; }
+      .sub-nav__cta__bg-state--black { display: none; }
+      /* text-track: in flow to drive button height */
+      .sub-nav__cta__text-track {
+        position: relative;
+        z-index: 1;
+        animation: none !important;
+        transform: none !important;
+      }
+      .sub-nav__cta__text-state {
+        height: auto;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+      }
+      .sub-nav__cta__text-state:last-child { display: none; }
+      #sub-nav-active-label { text-align: left; }
+      .sub-nav__cta__arrow,
+      .sub-nav__cta__divider { display: flex; }
+      .sub-nav__cta__arrow { width: 11px; height: auto; flex-shrink: 0; }
+      .sub-nav__cta__text-state { gap: 12px; }
+      .sub-nav__cta span { font-size: 12px; }
+      .sub-nav__link { font-size: 12px; white-space: nowrap; }
+
+      /* Transactions mobile */
+      .transactions {
+        padding: 72px 16px;
+      }
+      .section-heading { font-size: 40px; margin-bottom: 36px; }
+      .transactions__body { flex-direction: column; gap: 32px; }
+      .transactions__filters {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 12px;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 24px 0;
+      }
+      .transactions__filters::-webkit-scrollbar { display: none; }
+      .transactions__filter {
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .transactions__filter { font-size: 16px; gap: 8px; }
+      .transactions__list { gap: 32px; }
+      .transaction-item { flex-direction: column; gap: 12px; }
+      .transaction-item__meta { width: 100%; flex-direction: row; gap: 16px; padding-top: 0; }
+      .transaction-item__title { font-size: 24px; }
+      .transaction-item__desc { font-size: 16px; }
+      .transaction-item { gap: 16px; }
+      .transaction-item__content { gap: 12px; }
+      /* Remove expand/read-more on mobile */
+      .transaction-item__desc--clamped { display: block; overflow: visible; -webkit-line-clamp: unset; }
+      .read-more { display: none; }
+      .transaction-item__content .read-more { margin-top: 8px; }
+      .btn-outline { width: 100%; font-size: 14px; height: 54px; }
+      /* Show-more button mobile */
+      .btn-show-more {
+        width: 304px;
+        height: 54px;
+        position: relative;
+      }
+      .btn-show-more.btn-enter .btn-show-more__bg-track,
+      .btn-show-more.btn-leave .btn-show-more__bg-track,
+      .btn-show-more.btn-enter .btn-show-more__text-track,
+      .btn-show-more.btn-leave .btn-show-more__text-track {
+        animation: none !important;
+        transform: none !important;
+      }
+      .btn-show-more__bg-state { height: 100%; }
+      .btn-show-more__bg-state--blue { display: none; } /* white is default state */
+      .btn-show-more__text-track { position: relative; z-index: 1; }
+      .btn-show-more__text-state { height: 54px; padding: 0 18px; gap: 16px; }
+      .btn-show-more__arrow { width: 11px; height: auto; }
+      .btn-show-more__text-state--hover { display: none; }
+      .btn-show-more__text-state span { font-size: 14px; }
+
+      /* Accolades mobile */
+      .accolades {
+        padding: 72px 16px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      /* Accolades: heading stays fixed, only grid scrolls */
+      .accolades { overflow: visible; }
+      .accolades > .section-heading { padding: 0; margin-bottom: 36px; }
+      .accolades__grid {
+        display: flex;
+        gap: 8px;
+        flex-wrap: nowrap;
+        padding: 0;
+        width: 100%;
+        overflow-x: scroll; /* force always visible */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #C90017 #FFFFFF;
+      }
+      /* Hide native scrollbar — replaced by custom */
+      .accolades__grid { scrollbar-width: none; }
+      .accolades__grid::-webkit-scrollbar { display: none; }
+      /* Custom scrollbar */
+      .accolades__scrollbar-track {
+        display: block;
+        height: 4px;
+        background: #FFFFFF;
+        margin-top: 36px;
+        position: relative;
+        border-radius: 0;
+      }
+      .accolades__scrollbar-thumb {
+        position: absolute;
+        top: 0; left: 0;
+        height: 100%;
+        background: #C90017;
+        border-radius: 0;
+        transition: left 0.05s linear;
+      }
+      /* Accolade cards mobile — no flip, no read more, show all */
+      .accolade-card { width: 320px; height: 304px; padding: 16px; }
+      .accolade-card--extra { display: block !important; }
+      #btn-show-more-accolades { display: none !important; }
+      .accolade-card__back { display: none !important; }
+      .accolade-card__more-btn { display: none !important; }
+      .accolade-card {
+        width: 343px;
+        height: 304px;
+        flex-shrink: 0;
+      }
+      .accolade-card__name { font-size: 24px; }
+
+      /* Testimonial mobile */
+      .testimonial { padding: 72px 16px; }
+      .testimonial__quote { font-size: 24px; }
+      .testimonial__inner { gap: 32px; }
+      .testimonial__nav-btn { width: 54px; height: 54px; }
+
+      /* Qual + Memb mobile */
+      .qual-memb { padding: 72px 16px; }
+      .qual-memb__container { gap: 72px; }
+      .qual-row:first-child { padding-top: 0; }
+      .qual-row__institution { width: auto !important; }
+      .qual-memb__pattern { display: none; }
+      .qual-row__institution { font-size: 18px; width: 100%; }
+      .memb__items { flex-direction: row; flex-wrap: wrap; gap: 48px; }
+      .memb-item { width: 148px; }
+      .memb-item__name { width: 100%; }
+
+      /* Publications mobile */
+      .publications { padding: 72px 16px; }
+      .publications > .section-heading {
+        padding: 0;
+        margin-bottom: 36px;
+      }
+      .publications__grid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0;
+        flex-wrap: nowrap;
+        gap: 8px;
+        width: 100%;
+      }
+      .publications__grid::-webkit-scrollbar { display: none; }
+      .pub-card { width: 343px; height: 360px; flex-shrink: 0; padding: 16px; }
+      .pub-card__body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .pub-card__top { gap: 8px; }
+      .pub-card__excerpt { font-size: 14px; }
+      .pub-card__title { font-size: 24px; }
+      /* No hover cursor on mobile */
+      .pub-card, .pub-card * { cursor: auto !important; }
+      /* Read More button */
+      .pub-card__read-more {
+        display: inline-block;
+        background: none;
+        border: none;
+        border-bottom: 2px solid var(--justice-blue);
+        padding-bottom: 4px;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+        color: var(--judicial-ink);
+        cursor: pointer;
+        width: fit-content;
+      }
+      /* Custom scrollbar */
+      .publications__scrollbar-track {
+        display: block;
+        height: 4px;
+        background: #FFFFFF;
+        margin-top: 36px;
+        position: relative;
+        border-radius: 0;
+      }
+      .publications__scrollbar-thumb {
+        position: absolute;
+        top: 0; left: 0;
+        height: 100%;
+        background: #C90017;
+        border-radius: 0;
+        transition: left 0.05s linear;
+      }
+
+      /* Footer mobile */
+      .site-footer {
+        padding: 48px 16px 32px;
+      }
+      .site-footer__decor-br {
+        top: 0;
+        bottom: auto;
+        right: 0;
+      }
+      .site-footer__decor-br img { width: 320px; height: auto; }
+      .site-footer__top {
+        flex-direction: column;
+        gap: 48px;
+        margin-bottom: 48px;
+      }
+      .site-footer__brand { width: 100%; gap: 40px; }
+      .site-footer__nav {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+      }
+      .footer-nav-col { width: 100%; }
+      .footer-nav-col:last-child { width: 100%; }
+      .footer-nav-col__heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(247,247,247,0.1);
+        margin-bottom: 0;
+        cursor: pointer;
+      }
+      .footer-nav-col ul {
+        display: none;
+        padding: 16px 0 8px;
+      }
+      .site-footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+      .site-footer__legal { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .site-footer__legal-divider { display: none; }
+      .site-footer__decor-logo { width: 200px; height: auto; }
+    }
+    /* ─────────────────────────────────────────────
+       HEADING SCROLL ANIMATIONS
+    ───────────────────────────────────────────── */
+    /* .anim-heading replaced by word-split reveal via JS */
+
+    /* ─────────────────────────────────────────────
+       PAGE LOADER
+    ───────────────────────────────────────────── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--justice-blue);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .loader.exit {
+      animation: loader-exit 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+    @keyframes loader-exit {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-100%); }
+    }
+    .loader__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .loader__logo {
+      width: 160px;
+      height: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: loader-logo-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    @keyframes loader-logo-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .loader__tagline {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: loader-tagline-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.85s forwards;
+    }
+    @keyframes loader-tagline-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero fades in after loader exits */
+    body.loaded .hero,
+    body.loaded .main-nav {
+      animation: hero-fade-in 0.8s ease forwards;
+    }
+    body.loaded .main-nav { animation-delay: 0.15s; }
+    @keyframes hero-fade-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Keep hidden until loaded */
+    .hero, .main-nav { opacity: 0; }
+
+    /* ── Split-text word reveal ── */
+    .split-word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+      /* Extra room for descenders (g, y, p etc) so they aren't clipped */
+      padding-bottom: 0.28em;
+      margin-bottom: -0.28em;
+    }
+    .split-word__inner {
+      display: inline-block;
+      transform: translateY(110%);
+    }
+    /* Only hero name triggers on body.loaded — all other split words trigger via scroll observer */
+    body.loaded .hero__name .split-word__inner {
+      animation: wordReveal 0.79s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    /* Senior Partner + Vikram together → Raghani → title → bio */
+    body.loaded .hero__name-line1 .split-word__inner { animation-delay: 0s; }
+    body.loaded .hero__name-line2 .split-word__inner { animation-delay: 0.2s; }
+    @keyframes wordReveal {
+      0%   { transform: translateY(110%) skewY(10deg); }
+      100% { transform: translateY(0)    skewY(0deg); }
+    }
+
+    /* ── Hero supporting text fade-up ── */
+    /* Sequence: Senior Partner (0s) → Vikram (0.2s) → Raghani (0.35s) → title → bio */
+    .hero__eyebrow,
+    .hero__title,
+    .hero__bio-text {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    body.loaded .hero__eyebrow {
+      animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
+    }
+    body.loaded .hero__title {
+      animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+    }
+    body.loaded .hero__bio-text {
+      animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor for Publications -->
+  <div class="pub-cursor" id="pub-cursor">
+    <img src="Publications & Insights Hover Icon.svg" alt="" />
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAGE LOADER
+  ═══════════════════════════════════════════ -->
+  <div class="loader" id="loader">
+    <div class="loader__content">
+      <img src="JSA.svg" class="loader__logo" alt="JSA" />
+      <p class="loader__tagline">Advocates &amp; Solicitors</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN NAVIGATION
+  ═══════════════════════════════════════════ -->
+  <nav class="main-nav" id="main-nav">
+    <div class="main-nav__inner">
+      <a href="#" class="main-nav__logo">
+        <img src="JSA.svg" alt="JSA" />
+      </a>
+      <div class="main-nav__links">
+        <a href="#">Home</a>
+        <div class="main-nav__link-drop">
+          <a href="#">Our People</a>
+          <img src="weui_arrow-outlined.svg" alt="" aria-hidden="true" />
+        </div>
+        <div class="main-nav__link-drop">
+          <a href="#">Practice Areas</a>
+          <img src="weui_arrow-outlined.svg" alt="" aria-hidden="true" />
+        </div>
+        <div class="main-nav__link-drop">
+          <a href="#">Sectors</a>
+          <img src="weui_arrow-outlined.svg" alt="" aria-hidden="true" />
+        </div>
+        <div class="main-nav__link-drop">
+          <a href="#">Insights</a>
+          <img src="weui_arrow-outlined.svg" alt="" aria-hidden="true" />
+        </div>
+        <a href="#">About Us</a>
+      </div>
+      <div class="main-nav__search">
+        <img src="search.svg" alt="Search" />
+      </div>
+      <!-- Mobile nav icon -->
+      <div class="main-nav__mobile">
+        <img src="menu.svg" alt="Menu" class="main-nav__menu-svg" />
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════ -->
+  <section class="hero" id="experience" data-section="experience">
+    <div class="hero__inner">
+      <!-- Left -->
+      <div class="hero__left">
+        <div>
+          <div class="hero__eyebrow">
+            <div class="hero__eyebrow-line"></div>
+            <span class="hero__eyebrow-text label">Senior Partner</span>
+          </div>
+          <div class="hero__name-wrap">
+            <h1 class="hero__name">
+              <span class="hero__name-line1">
+                <span class="split-word"><span class="split-word__inner">Vikram</span></span>
+              </span><br>
+              <span class="hero__name-line2">
+                <span class="split-word"><span class="split-word__inner">Raghani</span></span>
+                <span class="hero__name-dot"></span>
+              </span>
+            </h1>
+          </div>
+          <p class="hero__title">Member, Executive Committee · Mumbai</p>
+        </div>
+        <div class="hero__bio">
+          <p class="hero__bio-text">Vikram advises domestic majors and international companies on the full gamut of M&amp;A and private equity transactions in the listed and unlisted space — a trusted advisor to Temasek, EQT, and GIC.</p>
+          <div class="hero__contacts">
+            <a href="mailto:vikram@jsalaw.com" class="hero__contact-link">
+              <img src="email.svg" alt="" />
+              <span>vikram@jsalaw.com</span>
+            </a>
+            <a href="tel:+912243418904" class="hero__contact-link">
+              <img src="phone.svg" alt="" />
+              <span>+91 22 4341 8904</span>
+            </a>
+          </div>
+        </div>
+        <div class="hero__practice-areas">
+          <p class="hero__practice-label label">Practice Areas</p>
+          <div class="hero__tags">
+            <span class="hero__tag"><span>Private Equity</span><img src="new link.svg" class="hero__tag-icon" alt="" aria-hidden="true" /></span>
+            <span class="hero__tag"><span>M&amp;A</span><img src="new link.svg" class="hero__tag-icon" alt="" aria-hidden="true" /></span>
+            <span class="hero__tag"><span>Securities Laws</span><img src="new link.svg" class="hero__tag-icon" alt="" aria-hidden="true" /></span>
+            <span class="hero__tag"><span>Capital Markets</span><img src="new link.svg" class="hero__tag-icon" alt="" aria-hidden="true" /></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="hero__right">
+        <img src="Vector.svg" class="hero__vector" alt="" aria-hidden="true" />
+        <div class="hero__image-wrap">
+          <img src="image.png" alt="Vikram Raghani" class="hero__photo" />
+          <img src="hero-top-right-icon.svg" class="hero__top-right-icon" alt="" aria-hidden="true" />
+          <button class="hero__vcard-btn" aria-label="Download V-Card">
+            <!-- Background track -->
+            <div class="hero__vcard-btn__bg-track">
+              <div class="hero__vcard-btn__bg-state hero__vcard-btn__bg-state--blue"></div>
+              <div class="hero__vcard-btn__bg-state hero__vcard-btn__bg-state--black"></div>
+            </div>
+            <!-- Text/icon track -->
+            <div class="hero__vcard-btn__text-track">
+              <div class="hero__vcard-btn__text-state">
+                <img src="first-1.svg" class="btn-arrow" alt="" />
+                <div class="btn-divider"></div>
+                <span>Download V-Card</span>
+              </div>
+              <div class="hero__vcard-btn__text-state">
+                <img src="first-1.svg" class="btn-arrow" alt="" />
+                <div class="btn-divider"></div>
+                <span>Download V-Card</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       STICKY SUB-NAV + REMAINING CONTENT
+  ═══════════════════════════════════════════ -->
+  <div class="sub-nav-wrapper">
+    <!-- Sub Nav -->
+    <nav class="sub-nav" id="sub-nav">
+      <div class="sub-nav__inner">
+        <!-- Mobile dropdown trigger -->
+        <button class="sub-nav__trigger" id="sub-nav-trigger" aria-expanded="false">
+          <span id="sub-nav-active-label">Experience</span>
+          <img src="weui_arrow-outlined.svg" class="sub-nav__trigger-arrow" alt="" />
+        </button>
+        <div class="sub-nav__links">
+          <a href="#experience"    class="sub-nav__link active" data-target="experience">Experience</a>
+          <a href="#transactions"  class="sub-nav__link"        data-target="transactions">Transactions</a>
+          <a href="#accolades"     class="sub-nav__link"        data-target="accolades">Accolades &amp; Rankings</a>
+          <a href="#testimonials"  class="sub-nav__link"        data-target="testimonials">Testimonials</a>
+          <a href="#education"     class="sub-nav__link"        data-target="education">Education</a>
+          <a href="#publications"  class="sub-nav__link"        data-target="publications">Publications</a>
+        </div>
+        <!-- Mobile dropdown panel -->
+        <div class="sub-nav__dropdown" id="sub-nav-dropdown">
+          <a href="#experience"    class="sub-nav__dropdown-link" data-target="experience">Experience</a>
+          <a href="#transactions"  class="sub-nav__dropdown-link" data-target="transactions">Transactions</a>
+          <a href="#accolades"     class="sub-nav__dropdown-link" data-target="accolades">Accolades &amp; Rankings</a>
+          <a href="#testimonials"  class="sub-nav__dropdown-link" data-target="testimonials">Testimonials</a>
+          <a href="#education"     class="sub-nav__dropdown-link" data-target="education">Education</a>
+          <a href="#publications"  class="sub-nav__dropdown-link" data-target="publications">Publications</a>
+        </div>
+        <button class="sub-nav__cta" id="sub-nav-cta" aria-label="Download V-Card">
+          <div class="sub-nav__cta__bg-track">
+            <div class="sub-nav__cta__bg-state sub-nav__cta__bg-state--blue"></div>
+            <div class="sub-nav__cta__bg-state sub-nav__cta__bg-state--black"></div>
+          </div>
+          <div class="sub-nav__cta__text-track">
+            <div class="sub-nav__cta__text-state">
+              <img src="first-1.svg" class="sub-nav__cta__arrow" alt="" />
+              <div class="sub-nav__cta__divider"></div>
+              <span>V-Card</span>
+            </div>
+            <div class="sub-nav__cta__text-state">
+              <img src="first-1.svg" class="sub-nav__cta__arrow" alt="" />
+              <div class="sub-nav__cta__divider"></div>
+              <span>V-Card</span>
+            </div>
+          </div>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+         BIO BLUE BAND
+    ═══════════════════════════════════════════ -->
+    <section class="bio-band">
+      <div class="bio-band__pattern">
+        <img src="Group 1261153238.svg" alt="" aria-hidden="true" />
+      </div>
+      <!-- Staircase steps — bottom left -->
+      <div class="bio-band__steps" aria-hidden="true">
+        <div class="bio-band__step bio-band__step--3"></div>
+        <div class="bio-band__step bio-band__step--2"></div>
+        <div class="bio-band__step bio-band__step--1"></div>
+      </div>
+      <div class="bio-band__grid">
+        <p class="bio-band__main-text">Vikram Raghani is one of India's leading private equity and M&amp;A advisors, having guided global investors and sovereign wealth funds such as Temasek, EQT, GIC, TPG, and SMBC on landmark transactions that have shaped industries and set new benchmarks.</p>
+        <div class="bio-band__small-text">
+          <p class="bio-band__small-p1">As a member of JSA's Executive Committee and former Co-Chair of its Corporate Practice, he combines institutional leadership with deep sector expertise.</p>
+          <p class="bio-band__small-p2">Ranked by Chambers and Partners in Band 1 for Private Equity in India and named an "A-list" lawyer by the India Business Law Journal in 2026, Vikram is recognised as a practical dealmaker known for measured judgment, strategic counsel, and precision in execution.</p>
+          <button class="bio-band__read-more" id="bio-read-more">
+            <img src="add icon.svg" class="read-more__arrow" alt="" />
+            <span>Read More</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         KEY TRANSACTIONS
+    ═══════════════════════════════════════════ -->
+    <section class="transactions" id="transactions" data-section="transactions">
+      <h2 class="section-heading">Key Transactions</h2>
+      <div class="transactions__body">
+        <!-- Filters -->
+        <div class="transactions__filters">
+          <button class="transactions__filter active" data-filter="all">
+            <span class="transactions__filter-arrow"><img src="Group 1000015387-1.svg" alt="" /></span>
+            All
+          </button>
+          <button class="transactions__filter" data-filter="pe">
+            <span class="transactions__filter-arrow"><img src="Group 1000015387-1.svg" alt="" /></span>
+            Private Equity
+          </button>
+          <button class="transactions__filter" data-filter="ma">
+            <span class="transactions__filter-arrow"><img src="Group 1000015387-1.svg" alt="" /></span>
+            M&amp;A
+          </button>
+          <button class="transactions__filter" data-filter="cm">
+            <span class="transactions__filter-arrow"><img src="Group 1000015387-1.svg" alt="" /></span>
+            Capital Markets
+          </button>
+          <button class="transactions__filter" data-filter="sl">
+            <span class="transactions__filter-arrow"><img src="Group 1000015387-1.svg" alt="" /></span>
+            Securities Law
+          </button>
+        </div>
+
+        <!-- Transaction list -->
+        <div class="transactions__list" id="transactions-list">
+          <div class="transaction-item" data-category="ma">
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2026</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Nuveen</h3>
+              <p class="transaction-item__desc">Advised Nuveen, a global asset manager with approximately USD 1.4 trillion in assets under management, in its acquisition of FTSE 100-listed Schroders plc, a leading provider of active asset management, advisory and wealth management services with approximately USD 1.1 trillion in assets under management, in a board-recommended cash acquisition valuing Schroders at approximately USD 12.5 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider"></div>
+
+          <div class="transaction-item" data-category="ma">
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2026</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Singapore Telecommunications Limited ("Singtel")</h3>
+              <p class="transaction-item__desc">Advised and represented Singtel in their acquisition, with a KKR-led consortium, of an 82% stake in Telemedia Global Data Centres, from its parent, ST Telemedia, for approximately USD 5.1 billion. (At an enterprise valuation of approximately USD 13.8 billion).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider"></div>
+
+          <div class="transaction-item" data-category="ma">
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2026</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">TIL Limited</h3>
+              <p class="transaction-item__desc">Advised and represented TIL Limited in relation to its acquisition of a majority stake in Tulip Compression Private Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2026</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Advised and represented Temasek, with respect to their investment in the pre-IPO round of Clean Max, by way of a primary subscription of shares of Clean Max and secondary purchase of shares from BGTF One Holdings (DIFC) Limited, an existing shareholder and promoter of Clean Max. Clean Max is a commercial and industrial renewable energy company.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2026</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">ICICI Ventures</h3>
+              <p class="transaction-item__desc">Advised and represented ICICI Ventures on their investment in Agrow Allied. The transaction comprised both a primary capital infusion and a secondary sale by existing shareholders to India Advantage Fund S5 I, a fund managed by ICICI Venture Funds Management Company Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">IDFC FIRST Bank</h3>
+              <p class="transaction-item__desc">Fundraise from Warburg Pincus and the Abu Dhabi Investment Authority, ("ADIA"), of up to USD 875 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Chemfield Cellulose</h3>
+              <p class="transaction-item__desc">Advised and represented Chemfield Cellulose Private Limited, ("CCPL"), and its Promoters on the divestment of a strategic stake in CCPL to Oji Holdings Corporation. The transaction is proposed to be undertaken in multiple tranches and is subject to receipt of regulatory approvals. CCPL is India's first and leading manufacturer of high-quality and consistent Microcrystalline Cellulose for the pharmaceutical industry.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Theobroma Foods</h3>
+              <p class="transaction-item__desc">Advised and represented Theobroma Foods Private Limited, ("Theobroma Foods"), and its shareholders on the sale of 84% stake in Theobroma Foods to ChrysCapital. Theobroma Foods is a confectionary chain of stores which operates over 250 stores in more than 30 cities throughout India.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Sanghvi family</h3>
+              <p class="transaction-item__desc">Advised and represented Mr. Shailesh Sanghvi (promoter and Managing Director) and other promoter shareholders in the acquisition of majority stake of Mega Fine Pharma Private Limited by Motilal Oswal Alternates, a subsidiary of Motilal Oswal Financial Services Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">GIC Singapore</h3>
+              <p class="transaction-item__desc">Advised and represented GIC Singapore in establishing a joint venture platform with SAMHI Hotels Limited for investment in existing and future hotels. SAMHI is a prominent branded hotel ownership and asset management platform in India which has a long-term management arrangement with three of the established and well recognised global hotel operators, namely, Marriott, IHG, and Hyatt.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Sumitomo Mitsui Banking Corporation ("SMBC")</h3>
+              <p class="transaction-item__desc">Acquisition of a 24% stake in Yes Bank for USD 1.9 billion, including acquisition of a 20% stake in the largest cross-border M&amp;A deal in India's financial sector (SMBC acquired a 13.19% stake from SBI and 6.81% from multiple banks, deal value USD 1.58 billion), and an additional 4.22% stake through secondary purchase from CA Basque Investments (Carlyle Group) for USD 349 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Complete exit from Tata Play Limited (formerly Tata Sky) by way of sale of its 10% stake to Tata Sons Private Limited. The transaction was subject to regulatory approvals, which were obtained.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek, IHC, and Alpha Wave Global</h3>
+              <p class="transaction-item__desc">Advised and represented Temasek, IHC, and Alpha Wave Global, in their acquisition of a minority stake in the FMCG vertical of the Haldiram Group, i.e., Haldiram Snacks Food Private Limited, in the largest ever deal in the domestic consumer segment. Temasek acquired a 9% stake, approximately, at a company valuation of USD 10 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">EQT</h3>
+              <p class="transaction-item__desc">Advised and represented EQT, (acting through Fort India B.V. and Fort B.V.), on the sale of its 100% shareholding in AGS Health Private Limited, along with its group companies, to Blackstone, (acting through BCP Asia II Topco VIII Pte. Limited).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">TPG</h3>
+              <p class="transaction-item__desc">Advised and represented TPG on Indian law aspects in relation to TPG's proposed acquisition of PTC's Kepware® industrial connectivity and ThingWorx® Internet of Things (IoT) businesses. The deal size was approximately USD 725 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">MO Alternates</h3>
+              <p class="transaction-item__desc">Advised and represented MO Alternates in its acquisition of a significant minority stake in the medical diagnostic equipment manufacturer, Sensa Core Medical Instrumentation Private Limited through a combination of primary infusion and secondary purchase of shares.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2025</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">SMBC</h3>
+              <p class="transaction-item__desc">Advised and represented Sumitomo Mitsui Banking Corporation, ("SMBC"), on their sale of 1.65% of the equity capital of Kotak Mahindra Bank Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">EQT</h3>
+              <p class="transaction-item__desc">Acquisition of PropertyGuru Group Limited, (NYSE:PGRU), Southeast Asia's leading property technology company. KKR and TPG which hold a combined 56% of PropertyGuru's shares, sold their stakes as part of this transaction. The deal value was USD 1.1 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">EQT</h3>
+              <p class="transaction-item__desc">Acquisition of IndoStar Home Finance Private Limited, a wholly owned subsidiary of IndoStar Capital Finance Limited, a listed company, for USD 210 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Sheares Healthcare</h3>
+              <p class="transaction-item__desc">Divestment of an 87% stake in Medica Synergie Private Limited to Manipal Hospitals which is majority owned by Temasek Holdings.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment of a 24.6% stake in Rebel Foods Private Limited, the largest deal in the internet restaurant segment.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Additional investment in Sarvagram Solutions Private Limited, by way of primary investment. This round of investments was led by Peak XV. Temasek and the other existing investors invested in this round in exercise of their pre-emptive rights.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Additional investment of a 10% stake in Cloudnine Hospitals, by way of a secondary purchase from Peak XV Partners (formerly Sequoia Growth). JSA had also advised Temasek on its initial acquisition of minority stake in Cloudnine Hospitals in 2023.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Divestment of a minority stake in Manipal Hospitals to Ammar SDN BHD (an affiliated entity of the sovereign wealth fund of Brunei).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Acquiring a minority stake in VFS Global AG, ("VFS"), from Blackstone. VFS is headquartered in Zurich, is a global leader in visa processing and passport administration outsourcing with operations in over 150 countries, 69 government clients, and over 3,000 visa application centres worldwide.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">EQT</h3>
+              <p class="transaction-item__desc">Acquisition of a controlling stake in GeBBS Healthcare Solutions, a global provider of healthcare outsourcing solutions, from ChrysCapital.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">EQT</h3>
+              <p class="transaction-item__desc">Pre-IPO sale of shares in Sagility India Limited, to multiple buyers including funds managed by 360 One (formerly IIFL Wealth), Avendus Future Leaders Fund II, Elpro International Limited, and Adani Properties Private Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">CitiusTech</h3>
+              <p class="transaction-item__desc">Acquisition of RAVSoft's Merative business. The transaction was structured as a multi-jurisdiction acquisition of employees and assets. CitiusTech is a Baring-EQT and Bain Capital portfolio company.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Hemato Oncology Clinic</h3>
+              <p class="transaction-item__desc">Advised and represented Hemato Oncology Clinic (Ahmedabad) Private Limited, ("HOC"), and its shareholders in a strategic arrangement involving sale of HOC to Tata Capital Healthcare Fund backed Cellcure Cancer Centre Private Limited. The transaction was undertaken in two phases involving an initial sale of 22% by its shareholders to MOC followed by a merger of HOC with MOC.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">ICICI Ventures</h3>
+              <p class="transaction-item__desc">Investment in Zivore Apparel Private Limited, ("Zivore"). Zivore is engaged in the business of manufacturing and selling women's ethnic apparel under its popular brands "Libas", "Libas Art", "Libas Kids" and "Gerua".</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Motilal Oswal Alternates</h3>
+              <p class="transaction-item__desc">Investment in HealthKart, a leading consumer nutrition platform. Motilal Oswal Alternates invested along with ChrysCapital.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Singtel (Pastel Limited)</h3>
+              <p class="transaction-item__desc">Advised and represented Pastel Limited, ("Singtel"), on their sale of 0.8% of the equity capital of Bharti Airtel Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Nirlon</h3>
+              <p class="transaction-item__desc">Advised and represented Kunal Sagar and Alfano Pte. Ltd., promoters of Nirlon Limited, ("Nirlon"), in their sale of 2.5% of the equity capital of Nirlon, through two separate block deals. Nirlon is engaged in the business of developing and managing an Industrial Park/IT Park in Mumbai (Nirlon Knowledge Park).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2024</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Sumitomo Wiring</h3>
+              <p class="transaction-item__desc">Advised and represented Sumitomo Wiring Systems Limited and H. K. Wiring Systems Limited in the sale of approximately 300 million shares (a 4.43% stake) of Samvardhana Motherson International Limited through two separate block deals.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">BPEA EQT</h3>
+              <p class="transaction-item__desc">Acquisition of a majority stake in Indium Software from their existing shareholders.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Divestment of a minority stake in Manipal Hospitals to Novo Holdings and California Public Employees' Retirement System; and Mubadala (an Abu Dhabi based Sovereign Wealth Fund).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Acquisition of a minority stake in Skyroot Aerospace Private Limited. Existing investors GIC and LNM India Internet Ventures Limited also participated in this round of funding.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Acquisition of a majority stake in Bengaluru-based Manipal Hospitals. (Temasek increased its stake from 41% to 59%). The transaction involved a partial exit by TPG and a full exit by the National Infrastructure Investment Fund. Manipal Hospitals runs India's second-biggest hospital chain with 29 hospitals in 16 cities. The transaction was the largest private equity deal in the Indian healthcare sector.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment in Kids Clinic India Limited, (Cloudnine Hospitals), in a Series D round, along with New Quest and Sequoia Capital. The investment was structured as a primary and secondary investment spread across different tranches.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment in SarvaGram Solutions Private Limited, India's first rural household centric platform which delivers customized financial products. This funding round also received participation from Elevar Equity, LLC, Elevation Capital and TVS Capital Funds.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">BPEA EQT</h3>
+              <p class="transaction-item__desc">Acquisition of a controlling stake in Indira IVF Hospital Private Limited, through a combination of acquisition from TA Associates and the company's founders, who retained a significant minority stake and continued to lead the Company.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">BPEA EQT</h3>
+              <p class="transaction-item__desc">Advised and represented BPEA EQT, alongside co-investor ChrysCapital who jointly agreed to acquire a 90% stake of HDFC Credila, (a NBFC), through a combination of acquisition from its parent company HDFC and a primary infusion. The deal size was approximately USD 1.35 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Citi</h3>
+              <p class="transaction-item__desc">Advised and represented Citigroup Global Markets India Private Limited in their capacity as stockbrokers, for the sale of Softbank's entire remaining shareholding of 1.08% in Zomato Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Baring</h3>
+              <p class="transaction-item__desc">Advised and represented Baring Private Equity Asia in the sale of their shares in Coforge.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="sl" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2023</span>
+              <span class="transaction-item__type">Securities Law</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Sumitomo Wiring</h3>
+              <p class="transaction-item__desc">Advised and represented Sumitomo Wiring in the sale of its 3.4% of the equity share capital in SMIL.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Google</h3>
+              <p class="transaction-item__desc">Acquisition of a 1.28% equity stake in Bharti Airtel Limited. The deal includes Google investing USD 700 million to acquire the stake and up to USD 300 million towards potential multi-year commercial agreements. The deal size was approximately USD 1 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">SingTel</h3>
+              <p class="transaction-item__desc">Advised and represented Singapore Telecommunications, ("SingTel"), in the sale of their equity stake in Bharti Airtel Limited (a listed company) to Bharti Telecom Limited. The deal size was approximately USD 1.6 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="ma" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">M&A</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Baring Private Equity Asia (BPEA)</h3>
+              <p class="transaction-item__desc">Advised and represented BPEA in its merger with EQT Asia. The merger combines the private equity teams of BPEA and EQT Asia, with offices in Beijing, Hong Kong, Mumbai, Seoul, Shanghai, Singapore, Sydney, and Tokyo. The deal size was approximately USD 7 billion.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment in HealthKart, a leading consumer nutrition platform. The deal size was approximately USD 135 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment in Google-backed e-commerce enablement platform Dotpe. Temasek led the funding round and PayU Fintech Investment, MUFG Bank Limited, Naya Global Investments and Info Edge Ventures fund also participated. The deal size was approximately USD 55 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Partial stake sale by Temasek in Intas Pharmaceuticals to Abu Dhabi Investment Authority.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Investment in Molbio Diagnostics. The deal size was approximately USD 85 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Follow-on investment in Country Delight, a D2C fresh food essentials brand that delivers dairy products, fruits, and vegetables to the doorstep of consumers, as part their Series D fundraise. The deal size was approximately USD 108 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Temasek</h3>
+              <p class="transaction-item__desc">Follow-on investment in Dr. Agarwal's Health Care Limited, ("AHCL"), which is the largest eye care chain in India and Africa. The deal size was approximately USD 100 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Baring and Citius</h3>
+              <p class="transaction-item__desc">Advised and represented Baring Private Equity Asia, ("Baring"), and CitiusTech Healthcare, ("Citius"), in a partial sale of Baring's stake in Citius to Bain Capital.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="pe" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">2022</span>
+              <span class="transaction-item__type">Private Equity</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Citius and Wilco Source</h3>
+              <p class="transaction-item__desc">Acted as the India counsel for both the buyers and sellers, in CitiusTech's 100% acquisition of Wilco Source from its selling shareholders. (CitiusTech is a Baring-EQT and Bain Capital portfolio company).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Citigroup Global Markets India Private Limited</h3>
+              <p class="transaction-item__desc">Mandatory tender offer made by Gardner Denver Holdings to the shareholders of Ingersoll-Rand (India) Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Citigroup Global Markets India Private Limited</h3>
+              <p class="transaction-item__desc">Mandatory tender offer made by the Total group to the shareholders of Adani Gas Limited, (offer size of approximately USD 600 million).</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Advent International Corporation</h3>
+              <p class="transaction-item__desc">Advised Advent in its offer to delist the equity shares of DFM Foods Limited from the BSE Limited and the National Stock Exchange of India Limited. (The voluntary delisting was successful through a counteroffer made by Advent). This was the first successful delisting in India using the counteroffer process which was introduced by SEBI in 2018.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Prabhat Dairy Limited</h3>
+              <p class="transaction-item__desc">Represented and acted for the promoters of Prabhat Dairy Limited on the voluntarily delisting offer of the company.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">Baring Private Equity Asia</h3>
+              <p class="transaction-item__desc">Advised Baring in the delisting of Hexaware Technologies Limited. The deal size was approximately USD 737 million.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">DXC Technology India Private Limited</h3>
+              <p class="transaction-item__desc">Voluntary delisting of Xchanging Solutions Limited from the BSE Limited and the National Stock Exchange of India Limited.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">UPL Limited</h3>
+              <p class="transaction-item__desc">Buyback of UPL's equity shares through an open market purchase.</p>
+            </div>
+          </div>
+
+          <div class="transaction-divider transaction-divider--hidden" data-extra></div>
+
+          <div class="transaction-item transaction-item--hidden" data-category="cm" data-extra>
+            <div class="transaction-item__meta">
+              <span class="transaction-item__year">—</span>
+              <span class="transaction-item__type">Capital Markets</span>
+            </div>
+            <div class="transaction-item__content">
+              <h3 class="transaction-item__title">NIIT Technologies Limited</h3>
+              <p class="transaction-item__desc">Buyback of NIIT's equity shares through a tender offer route.</p>
+            </div>
+          </div>
+
+          <!-- Show More button -->
+          <button class="btn-show-more" id="btn-show-more">
+            <div class="btn-show-more__bg-track">
+              <div class="btn-show-more__bg-state btn-show-more__bg-state--white"></div>
+              <div class="btn-show-more__bg-state btn-show-more__bg-state--blue"></div>
+            </div>
+            <div class="btn-show-more__text-track">
+              <div class="btn-show-more__text-state btn-show-more__text-state--default">
+                <img src="down.svg" class="btn-show-more__arrow" alt="" />
+                <div class="btn-show-more__divider"></div>
+                <span>Show More Transactions</span>
+              </div>
+              <div class="btn-show-more__text-state btn-show-more__text-state--hover">
+                <img src="down.svg" class="btn-show-more__arrow" alt="" />
+                <div class="btn-show-more__divider"></div>
+                <span>Show More Transactions</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         ACCOLADES & RANKINGS
+    ═══════════════════════════════════════════ -->
+    <section class="accolades" id="accolades" data-section="accolades">
+      <div style="max-width:1440px; margin:0 auto;">
+        <h2 class="section-heading accolades__heading">Accolades &amp; Rankings</h2>
+        <div class="accolades__grid">
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2013 – 2026 · Consecutive</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Chambers<br>&amp; Partners</p>
+                  <p class="accolade-card__desc">Ranked Band 1 for Private Equity (Dec 2025). Firm's Corporate/M&amp;A practice in Elite Band 1 for 2024–25.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Vikram has been individually ranked in Band 1 for Private Equity by Chambers &amp; Partners every year since 2013 — one of India's most consistently recognised practitioners.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2021 · 2023 · 2024 · 2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">India Business<br>Law Journal</p>
+                  <p class="accolade-card__desc">"A-list" lawyer in 2026. Three transactions named Landmark Deals of 2025; two placed in the top ten.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Named to the IBLJ "A-List" four times and recognised for three Landmark Deals of the Year in 2025, including two in the top ten.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2022 · 2023 · 2024 · 2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Legal Era -<br>Legal Media Group</p>
+                  <p class="accolade-card__desc">Recognised as a leading lawyer and 'Leading Lawyer Champion' for PE and M&amp;A transactions across four editions.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Recognised as a 'Leading Lawyer Champion' for Private Equity and M&amp;A transactions across four editions of the Legal Era rankings.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2022 · 2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Legal<br>500 APAC</p>
+                  <p class="accolade-card__desc">Leading Partner for Corporate &amp; M&amp;A (2026). Recommended lawyer for PE &amp; Investment Funds (2022).</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Recognised as a Leading Partner for Corporate &amp; M&amp;A in 2026 and recommended for Private Equity &amp; Investment Funds in 2022.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2025 · 2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">RSGI -<br>RISE Legal India</p>
+                  <p class="accolade-card__desc">Ranked 4th out of 200+ lawyers in India's private capital space (2025). Included in RISE Legal India Rankings (2026).</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Ranked 4th among 200+ lawyers in India's private capital space by RSGI Intelligence in 2025 and included in the RISE Legal India Rankings for 2026.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2025–2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">ET Global<br>Legal Awards</p>
+                  <p class="accolade-card__desc">JSA's M&amp;A practice won an excellence award at the ET Global Legal Awards for 2025–2026.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">JSA's M&amp;A practice received an excellence award at the ET Global Legal Awards, recognising outstanding work in the 2025–2026 cycle.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2023 · 2024 · 2025</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Asia<br>Law</p>
+                  <p class="accolade-card__desc">Recognised as a leading private equity lawyer. Firm's Private Equity practice ranked 'outstanding' in 2024 and 2025.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Recognised as a leading private equity lawyer across three editions. The firm's Private Equity practice achieved an 'outstanding' ranking in both 2024 and 2025.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2022 · 2024 · 2025</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">IFLR1000<br>Asia-Pacific</p>
+                  <p class="accolade-card__desc">Highly regarded for PE &amp; M&amp;A. Firm ranked Tier 1 for both practices in 2024 and 2025. BPEA–EQT merger named PE Deal of the Year for 2022.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Highly regarded for PE &amp; M&amp;A across multiple editions. The firm achieved Tier 1 status for both practice areas in 2024 and 2025, and the BPEA–EQT merger was named PE Deal of the Year for 2022.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2026</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Lexology<br>Index</p>
+                  <p class="accolade-card__desc">Selected for Lexology Index – M&amp;A and Governance 2026, a guide to the world's leading M&amp;A and Corporate Governance lawyers.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Selected for the Lexology Index – M&amp;A and Governance 2026, placing Vikram among the world's leading M&amp;A and Corporate Governance practitioners.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2025</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Merger<br>Market</p>
+                  <p class="accolade-card__desc">JSA ranked among the Top 5 Indian law firms by deal value in Global M&amp;A Rankings for the first nine months of 2025.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">JSA ranked among the Top 5 Indian law firms by deal value in Merger Market's Global M&amp;A Rankings for the first nine months of 2025.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2024</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Asian Venture<br>Capital Journal</p>
+                  <p class="accolade-card__desc">BPEA EQT's acquisition of a 90% stake in HDFC Credila selected as the large cap deal of the year for 2024.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">The BPEA EQT acquisition of a 90% stake in HDFC Credila — advised by Vikram — was selected as the large cap deal of the year for 2024 by the Asian Venture Capital Journal.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2024</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Merger<br>Links</p>
+                  <p class="accolade-card__desc">Ranked among the top 10 M&amp;A lawyers in India for FY 2023.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">Ranked among the top 10 M&amp;A lawyers in India for FY 2023 by Merger Links, based on deal volume and transaction complexity.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2023</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Venture Intelligence<br>League Table</p>
+                  <p class="accolade-card__desc">JSA ranked for M&amp;A and PE practice areas — PE deals worth over USD 3.54 billion and M&amp;A deals worth over USD 3.52 billion (Jan–Jun 2023).</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">JSA ranked for both M&amp;A and PE practice areas in the Venture Intelligence League Table, with PE deals worth over USD 3.54 billion and M&amp;A deals over USD 3.52 billion in the first half of 2023.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2022</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">Asian Legal<br>Business</p>
+                  <p class="accolade-card__desc">JSA ranked as a Tier 1 M&amp;A Law Firm in the Asia M&amp;A Law Firm Rankings, standing out for the volume, complexity, and size of transactions.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">JSA ranked Tier 1 in the Asian Legal Business Asia M&amp;A Law Firm Rankings for 2022, recognised for the volume, complexity, and size of transactions handled.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accolade-card accolade-card--extra" style="display:none">
+            <div class="accolade-card__inner">
+              <div class="accolade-card__front">
+                <p class="accolade-card__years">2022</p>
+                <div class="accolade-card__bottom">
+                  <p class="accolade-card__name">BW Global Legal<br>Summit &amp; Awards</p>
+                  <p class="accolade-card__desc">JSA recognised as the M&amp;A Law Firm of the Year.</p>
+                </div>
+                <button class="accolade-card__more-btn">Read More</button>
+              </div>
+                            <div class="accolade-card__back">
+                <p class="accolade-card__back-desc">JSA was recognised as the M&amp;A Law Firm of the Year at the BW Global Legal Summit &amp; Legal Leader Awards 2022.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- Custom scrollbar — mobile only -->
+        <div class="accolades__scrollbar-track">
+          <div class="accolades__scrollbar-thumb" id="accolades-thumb"></div>
+        </div>
+        <!-- Show More Accolades button -->
+        <button class="btn-show-more" id="btn-show-more-accolades">
+          <div class="btn-show-more__bg-track">
+            <div class="btn-show-more__bg-state btn-show-more__bg-state--white"></div>
+            <div class="btn-show-more__bg-state btn-show-more__bg-state--blue"></div>
+          </div>
+          <div class="btn-show-more__text-track">
+            <div class="btn-show-more__text-state btn-show-more__text-state--default">
+              <img src="down.svg" class="btn-show-more__arrow" alt="" />
+              <div class="btn-show-more__divider"></div>
+              <span>Show More Accolades</span>
+            </div>
+            <div class="btn-show-more__text-state btn-show-more__text-state--hover">
+              <img src="down.svg" class="btn-show-more__arrow" alt="" />
+              <div class="btn-show-more__divider"></div>
+              <span>Show More Accolades</span>
+            </div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         TESTIMONIAL
+    ═══════════════════════════════════════════ -->
+    <section class="testimonial" id="testimonials" data-section="testimonials">
+      <div class="testimonial__inner">
+        <div class="testimonial__slider" id="testimonial-slider">
+
+          <div class="testimonial__slide active">
+            <blockquote class="testimonial__quote">"Their high level of familiarity with our company — knowing our appetite for risk, how we operate, and our governance model — means they anticipate issues better than most other external law firms. Accessibility to partners, especially Vikram, is paramount."</blockquote>
+            <div class="testimonial__attribution">
+              <div class="testimonial__attribution-line"></div>
+              <span class="testimonial__attribution-text label">Leading Fund Manager</span>
+            </div>
+          </div>
+
+          <div class="testimonial__slide">
+            <blockquote class="testimonial__quote">"Vikram is extremely client-oriented with a strong understanding of deal dynamics. He has the ability to assess commercial implications of legal issues, provide balanced advice, and drive negotiations effectively with counterparties."</blockquote>
+            <div class="testimonial__attribution">
+              <div class="testimonial__attribution-line"></div>
+              <span class="testimonial__attribution-text label">Client · Chambers &amp; Partners</span>
+            </div>
+          </div>
+
+          <div class="testimonial__slide">
+            <blockquote class="testimonial__quote">"Recognised across the market for his focused practice and trusted by major institutional investors. One of India's most traditional, pure private equity lawyers — a practical dealmaker known for timely, effective execution."</blockquote>
+            <div class="testimonial__attribution">
+              <div class="testimonial__attribution-line"></div>
+              <span class="testimonial__attribution-text label">RSGI Intelligence &amp; Advisory</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="testimonial__nav">
+          <button class="testimonial__nav-btn testimonial__nav-btn--prev" aria-label="Previous">
+            <img src="Group 1000015387.svg" alt="" />
+          </button>
+          <button class="testimonial__nav-btn testimonial__nav-btn--next" aria-label="Next">
+            <img src="Group 1000015387-1.svg" alt="" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         QUALIFICATIONS + MEMBERSHIPS
+    ═══════════════════════════════════════════ -->
+    <section class="qual-memb" id="education" data-section="education">
+      <div class="qual-memb__pattern">
+        <img src="Mask group.svg" alt="" aria-hidden="true" />
+      </div>
+      <div class="qual-memb__container">
+        <!-- Qualifications -->
+        <div>
+          <h2 class="section-heading qual__heading">Qualifications</h2>
+          <div class="qual-rows">
+            <div class="qual-row">
+              <div class="qual-row__left">
+                <span class="qual-row__degree label">B.Com</span>
+                <span class="qual-row__institution">University of Bombay</span>
+              </div>
+              <span class="qual-row__year label">2000</span>
+            </div>
+            <div class="qual-row">
+              <div class="qual-row__left">
+                <span class="qual-row__degree label">LL.B.</span>
+                <span class="qual-row__institution">University of Bombay</span>
+              </div>
+              <span class="qual-row__year label">2003</span>
+            </div>
+            <div class="qual-row">
+              <div class="qual-row__left">
+                <span class="qual-row__degree label">Company Secretary</span>
+                <span class="qual-row__institution" style="width:627px;">Institute of Company Secretaries of India</span>
+              </div>
+              <span class="qual-row__year label">2003</span>
+            </div>
+            <div class="qual-row">
+              <div class="qual-row__left">
+                <span class="qual-row__degree label">Solicitor</span>
+                <span class="qual-row__institution" style="width:627px;">Bombay Incorporated Law Society</span>
+              </div>
+              <span class="qual-row__year label">2004</span>
+            </div>
+          </div>
+        </div>
+        <!-- Memberships -->
+        <div>
+          <h2 class="section-heading memb__heading">Memberships</h2>
+          <div class="memb__items">
+            <div class="memb-item">
+              <img src="image 45113.svg" alt="Bombay Incorporated Law Society" />
+              <p class="memb-item__name">Bombay Incorporated Law Society</p>
+            </div>
+            <div class="memb-item">
+              <img src="image 45114.svg" alt="Bar Council of Maharashtra and Goa" />
+              <p class="memb-item__name">Bar Council of Maharashtra and Goa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         PUBLICATIONS & INSIGHTS
+    ═══════════════════════════════════════════ -->
+    <section class="publications" id="publications" data-section="publications">
+      <h2 class="section-heading">Publications &amp; Insights</h2>
+      <div class="publications__grid">
+        <article class="pub-card">
+          <div class="pub-card__body">
+            <div class="pub-card__top">
+              <p class="pub-card__category">Private Equity</p>
+              <h3 class="pub-card__title">Navigating India's FDI Framework for PE Transactions</h3>
+              <p class="pub-card__excerpt">A closer look at India's evolving FDI landscape and the regulatory considerations shaping cross-border private equity transactions.</p>
+            </div>
+            <button class="pub-card__read-more">Read More</button>
+          </div>
+          <div class="pub-card__footer">
+            <div class="pub-card__meta">
+              <span class="pub-card__type">Article</span>
+              <span class="pub-card__dot"></span>
+              <span class="pub-card__type">6 Mins read</span>
+            </div>
+            <span class="pub-card__date">Oct 2024</span>
+          </div>
+        </article>
+        <article class="pub-card">
+          <div class="pub-card__body">
+            <div class="pub-card__top">
+              <p class="pub-card__category">Private Equity</p>
+              <h3 class="pub-card__title">Recent Enforcement Trends in Drag- and Tag-Along Rights</h3>
+              <p class="pub-card__excerpt">A look at recent Indian court trends and evolving enforcement approaches surrounding drag- and tag-along rights in private equity deals.</p>
+            </div>
+            <button class="pub-card__read-more">Read More</button>
+          </div>
+          <div class="pub-card__footer">
+            <div class="pub-card__meta">
+              <span class="pub-card__type">Workshop</span>
+              <span class="pub-card__dot"></span>
+              <span class="pub-card__type">4 Mins read</span>
+            </div>
+            <span class="pub-card__date">Oct 2024</span>
+          </div>
+        </article>
+        <article class="pub-card">
+          <div class="pub-card__body">
+            <div class="pub-card__top">
+              <p class="pub-card__category">Private Equity</p>
+              <h3 class="pub-card__title">SEBI's Revised Disclosure Norms: Key Transaction Impacts</h3>
+              <p class="pub-card__excerpt">SEBI's revised disclosure norms and their broader impact on listed companies and capital markets transactions.</p>
+            </div>
+            <button class="pub-card__read-more">Read More</button>
+          </div>
+          <div class="pub-card__footer">
+            <div class="pub-card__meta">
+              <span class="pub-card__type">Seminar</span>
+              <span class="pub-card__dot"></span>
+              <span class="pub-card__type">4 Mins read</span>
+            </div>
+            <span class="pub-card__date">Jul 2024</span>
+          </div>
+        </article>
+      </div>
+      <!-- Custom scrollbar — mobile only -->
+      <div class="publications__scrollbar-track">
+        <div class="publications__scrollbar-thumb" id="publications-thumb"></div>
+      </div>
+    </section>
+
+  </div><!-- end sub-nav-wrapper -->
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="site-footer__decor-logo">
+      <img src="Frame 1261153238.svg" alt="" aria-hidden="true" />
+    </div>
+    <div class="site-footer__decor-br">
+      <img src="Frame 2147226189.svg" alt="" aria-hidden="true" />
+    </div>
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <div class="site-footer__logo">
+          <img src="JSA-1.svg" alt="JSA" />
+        </div>
+        <div class="site-footer__newsletter">
+          <p class="site-footer__newsletter-label">Stay informed</p>
+          <div class="site-footer__email-row">
+            <input class="site-footer__email-input" type="email" placeholder="your@email.com" />
+            <div class="site-footer__email-send">
+              <img src="input arrow.svg" alt="Subscribe" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="site-footer__nav">
+        <div class="footer-nav-col">
+          <p class="footer-nav-col__heading">Our Locations</p>
+          <ul>
+            <li><a href="#">Ahmedabad</a></li>
+            <li><a href="#">Bengaluru</a></li>
+            <li><a href="#">Chennai</a></li>
+            <li><a href="#">Gurugram</a></li>
+            <li><a href="#">Hyderabad</a></li>
+            <li><a href="#">Mumbai</a></li>
+            <li><a href="#">Delhi</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-col__heading">Company</p>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our People</a></li>
+            <li><a href="#">Practice Areas</a></li>
+            <li><a href="#">Sectors</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-col">
+          <p class="footer-nav-col__heading">Resources</p>
+          <ul>
+            <li><a href="#">Thought Leadership</a></li>
+            <li><a href="#">Knowledge Hub</a></li>
+            <li><a href="#">Deals &amp; Matter Corner</a></li>
+            <li><a href="#">Awards &amp; Recognition</a></li>
+            <li><a href="#">Start Up</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="site-footer__social">
+        <a href="#" aria-label="LinkedIn"><img src="ri_linkedin-fill.svg" alt="LinkedIn" /></a>
+        <a href="#" aria-label="Social"><img src="ri_linkedin-fill-1.svg" alt="" /></a>
+        <a href="#" aria-label="Social"><img src="ri_linkedin-fill-2.svg" alt="" /></a>
+        <a href="#" aria-label="Social"><img src="ri_linkedin-fill-3.svg" alt="" /></a>
+      </div>
+      <div class="site-footer__legal">
+        <div class="site-footer__legal-links">
+          <a href="#">Privacy</a>
+          <a href="#">Disclaimer</a>
+          <a href="#">Terms</a>
+        </div>
+        <div class="site-footer__legal-divider"></div>
+        <p class="site-footer__copyright">© 2025 JSA Advocates &amp; Solicitors</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       JS — Sub-nav active state + basic interactions
+  ═══════════════════════════════════════════ -->
+  <script>
+    // Sub-nav active link on scroll
+    const sections = document.querySelectorAll('[data-section]');
+    const subNavLinks = document.querySelectorAll('.sub-nav__link[data-target]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.dataset.section;
+          subNavLinks.forEach(l => {
+            l.classList.toggle('active', l.dataset.target === id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // ── Bio band read more (mobile) ──────────────
+    (function() {
+      const btn  = document.getElementById('bio-read-more');
+      const p2   = document.querySelector('.bio-band__small-p2');
+      if (!btn || !p2) return;
+      btn.addEventListener('click', () => {
+        const expanded = p2.classList.toggle('expanded');
+        btn.querySelector('span').textContent = expanded ? 'Read Less' : 'Read More';
+      });
+    })();
+
+    // ── Read more expand/collapse ────────────────
+    (function() {
+      const btn  = document.getElementById('nuveen-read-more');
+      const desc = document.getElementById('nuveen-desc');
+      if (!btn || !desc) return;
+      btn.addEventListener('click', () => {
+        const isExpanded = desc.classList.toggle('expanded');
+        btn.querySelector('span').textContent = isExpanded ? 'Read Less' : 'Read More';
+      });
+    })();
+
+    // ── Transactions: show more + filters ────────
+    (function() {
+      const showMoreBtn   = document.getElementById('btn-show-more');
+      const allItems      = Array.from(document.querySelectorAll('.transaction-item'));
+      const allDividers   = document.querySelectorAll('.transaction-divider');
+      const btnSpans      = showMoreBtn ? showMoreBtn.querySelectorAll('.btn-show-more__text-state span') : [];
+      const PAGE          = 10;  // items per page
+      const INITIAL       = 3;   // items shown on load
+      let shownCount      = INITIAL;
+
+      const extraItems = allItems.filter(i => i.hasAttribute('data-extra'));
+      const totalItems = allItems.length;
+
+      // Hover animation
+      if (showMoreBtn) {
+        showMoreBtn.addEventListener('mouseenter', () => {
+          showMoreBtn.classList.remove('btn-leave');
+          showMoreBtn.classList.add('btn-enter');
+        });
+        showMoreBtn.addEventListener('mouseleave', () => {
+          showMoreBtn.classList.remove('btn-enter');
+          showMoreBtn.classList.add('btn-leave');
+        });
+
+        showMoreBtn.addEventListener('click', () => {
+          if (shownCount >= totalItems) {
+            shownCount = INITIAL;
+          } else {
+            shownCount = Math.min(shownCount + PAGE, totalItems);
+          }
+
+          const allShownNow = shownCount >= totalItems;
+          btnSpans.forEach(s => s.textContent = allShownNow ? 'Show Less Transactions' : 'Show More Transactions');
+          showMoreBtn.classList.toggle('btn-expanded', allShownNow);
+
+          applyFilter(document.querySelector('.transactions__filter.active')?.dataset.filter || 'all');
+        });
+      }
+
+      function applyFilter(filter) {
+        // For 'all': respect shownCount pagination. For specific filters: show all matching.
+        let allShownSoFar = 0;
+        allItems.forEach(item => {
+          const match = filter === 'all' || item.dataset.category === filter;
+          let show;
+          if (filter === 'all') {
+            allShownSoFar++;
+            show = allShownSoFar <= shownCount;
+          } else {
+            show = match;
+          }
+          item.style.display = show ? 'flex' : 'none';
+        });
+
+        // Rebuild dividers between visible items
+        allDividers.forEach(div => { div.style.display = 'none'; });
+        const visible = Array.from(allItems).filter(i => i.style.display === 'flex');
+        visible.forEach((item, i) => {
+          if (i < visible.length - 1) {
+            let next = item.nextElementSibling;
+            while (next && !next.classList.contains('transaction-item')) {
+              if (next.classList.contains('transaction-divider')) {
+                next.style.display = 'block';
+                break;
+              }
+              next = next.nextElementSibling;
+            }
+          }
+        });
+
+        // Show-more button: visible on 'all' filter; hide if all shown and no less to show
+        if (showMoreBtn) {
+          showMoreBtn.style.display = filter === 'all' ? 'flex' : 'none';
+          // Update label when all revealed
+          if (filter === 'all' && shownCount >= totalItems) {
+            btnSpans.forEach(s => s.textContent = 'Show Less Transactions');
+          }
+        }
+      }
+
+      document.querySelectorAll('.transactions__filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.transactions__filter').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilter(btn.dataset.filter);
+        });
+      });
+    })();
+
+    // ── Testimonial appear animation ─────────────
+    (function() {
+      const section = document.querySelector('.testimonial');
+      if (!section) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          section.classList.add('section-in');
+          obs.unobserve(section);
+        });
+      }, { threshold: 0.3 });
+      obs.observe(section);
+    })();
+
+    // ── Accolade card appear animation ───────────
+    (function() {
+      const section = document.querySelector('.accolades');
+      if (!section) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          section.classList.add('cards-in');
+          obs.unobserve(section);
+        });
+      }, { threshold: 0.4 });
+      obs.observe(section);
+
+    })();
+
+    // ── Accolades show more ───────────────────────
+    (function() {
+      const btn      = document.getElementById('btn-show-more-accolades');
+      const allCards = Array.from(document.querySelectorAll('.accolade-card--extra'));
+      const btnSpans = btn ? btn.querySelectorAll('.btn-show-more__text-state span') : [];
+      const PAGE = 3;
+      let shown = 3; /* cards 4-6 already visible */
+      if (!btn) return;
+      btn.addEventListener('mouseenter', () => { btn.classList.remove('btn-leave'); btn.classList.add('btn-enter'); });
+      btn.addEventListener('mouseleave', () => { btn.classList.remove('btn-enter'); btn.classList.add('btn-leave'); });
+      btn.addEventListener('click', () => {
+        if (shown >= allCards.length) {
+          allCards.forEach(c => { c.style.display = 'none'; });
+          shown = 0;
+          btnSpans.forEach(s => s.textContent = 'Show More Accolades');
+          btn.classList.remove('btn-expanded');
+        } else {
+          allCards.slice(shown, shown + PAGE).forEach(c => { c.style.display = ''; });
+          shown = Math.min(shown + PAGE, allCards.length);
+          const allShownNow = shown >= allCards.length;
+          btnSpans.forEach(s => s.textContent = allShownNow ? 'Show Less Accolades' : 'Show More Accolades');
+          btn.classList.toggle('btn-expanded', allShownNow);
+        }
+      });
+    })();
+
+    // ── Custom scrollbar factory ─────────────────
+    function initCustomScrollbar(gridSel, thumbId) {
+      const grid  = document.querySelector(gridSel);
+      const thumb = document.getElementById(thumbId);
+      if (!grid || !thumb) return;
+      function update() {
+        const scrollable = grid.scrollWidth - grid.clientWidth;
+        const thumbW = (grid.clientWidth / grid.scrollWidth) * 100;
+        const thumbL = scrollable > 0 ? (grid.scrollLeft / scrollable) * (100 - thumbW) : 0;
+        thumb.style.width = thumbW + '%';
+        thumb.style.left  = thumbL + '%';
+      }
+      update();
+      grid.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+    }
+
+    // ── Accolades custom scrollbar ───────────────
+    initCustomScrollbar('.accolades__grid', 'accolades-thumb');
+    // ── Publications custom scrollbar ────────────
+    initCustomScrollbar('.publications__grid', 'publications-thumb');
+
+    // ── Bio-band staircase steps ─────────────────
+    (function() {
+      const bioBand = document.querySelector('.bio-band');
+      if (!bioBand) return;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            bioBand.classList.add('steps-in');
+            observer.unobserve(bioBand);
+          }
+        });
+      }, { threshold: 0.75 });
+      observer.observe(bioBand);
+    })();
+
+    // ── Word-split reveal (headings + bio text) ──
+    function wordSplitReveal(selector, wordDelay, rootMargin, duration) {
+      const dur = duration || 0.79;
+      document.querySelectorAll(selector).forEach(el => {
+        const words = el.textContent.trim().split(/\s+/);
+        el.innerHTML = words.map(word =>
+          `<span class="split-word"><span class="split-word__inner">${word}</span></span>`
+        ).join(' ');
+
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.querySelectorAll('.split-word__inner').forEach((inner, i) => {
+              inner.style.animation =
+                `wordReveal ${dur}s cubic-bezier(0.22, 1, 0.36, 1) ${i * wordDelay}s forwards`;
+            });
+            obs.unobserve(entry.target);
+          });
+        }, { threshold: 0.2, rootMargin });
+
+        obs.observe(el);
+      });
+    }
+
+    // Headings: 0.08s per word
+    wordSplitReveal('.section-heading', 0.08, '0px 0px -15% 0px', 0.79);
+    // Bio-band large text: faster duration + tighter stagger
+    wordSplitReveal('.bio-band__main-text', 0.03, '0px 0px -10% 0px', 0.5);
+
+    // ── Publications custom cursor ───────────────
+    (function() {
+      const pubCards  = document.querySelectorAll('.pub-card');
+      const pubCursor = document.getElementById('pub-cursor');
+      if (!pubCards.length || !pubCursor) return;
+
+      let mouseX = 0, mouseY = 0;
+      let curX   = 0, curY   = 0;
+      let rafId  = null;
+      const LERP    = 0.13;  // slight delay
+      const OFFSET_X = 16;   // px offset from actual cursor
+      const OFFSET_Y = 16;
+
+      function tick() {
+        curX += (mouseX - curX) * LERP;
+        curY += (mouseY - curY) * LERP;
+        pubCursor.style.left = (curX + OFFSET_X) + 'px';
+        pubCursor.style.top  = (curY + OFFSET_Y) + 'px';
+        rafId = requestAnimationFrame(tick);
+      }
+
+      // Track mouse globally so cursor position is always current
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      pubCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.cursor = 'none';
+          pubCursor.classList.add('visible');
+          if (!rafId) tick();
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.cursor = '';
+          pubCursor.classList.remove('visible');
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        });
+      });
+    })();
+
+    // ── Testimonial slider ───────────────────────
+    (function() {
+      const slides  = document.querySelectorAll('.testimonial__slide');
+      const prevBtn = document.querySelector('.testimonial__nav-btn--prev');
+      const nextBtn = document.querySelector('.testimonial__nav-btn--next');
+      let current  = 0;
+      let animating = false;
+
+      function goTo(index, dir) {
+        if (animating || index === current) return;
+        animating = true;
+
+        const outSlide = slides[current];
+        const inSlide  = slides[index];
+
+        // Position incoming slide off-screen (no transition yet)
+        inSlide.classList.remove('active', 'from-right', 'from-left', 'to-left', 'to-right');
+        inSlide.classList.add(dir === 'next' ? 'from-right' : 'from-left');
+        // Force reflow so the starting transform is applied before transition kicks in
+        inSlide.getBoundingClientRect();
+
+        // Slide in incoming
+        inSlide.classList.add('active');
+        inSlide.classList.remove('from-right', 'from-left');
+
+        // Slide out current
+        outSlide.classList.add(dir === 'next' ? 'to-left' : 'to-right');
+        outSlide.classList.remove('active');
+
+        outSlide.addEventListener('transitionend', () => {
+          outSlide.classList.remove('to-left', 'to-right');
+          animating = false;
+        }, { once: true });
+
+        current = index;
+      }
+
+      // Auto-advance every 3 seconds, reset on manual click
+      let timer = setInterval(() => goTo((current + 1) % slides.length, 'next'), 3000);
+      function resetTimer() { clearInterval(timer); timer = setInterval(() => goTo((current + 1) % slides.length, 'next'), 3000); }
+
+      nextBtn.addEventListener('click', () => { goTo((current + 1) % slides.length, 'next'); resetTimer(); });
+      prevBtn.addEventListener('click', () => { goTo((current - 1 + slides.length) % slides.length, 'prev'); resetTimer(); });
+    })();
+
+    // ── Sub-nav mobile dropdown ──────────────────
+    (function() {
+      const trigger   = document.getElementById('sub-nav-trigger');
+      const dropdown  = document.getElementById('sub-nav-dropdown');
+      const activeLabel = document.getElementById('sub-nav-active-label');
+      if (!trigger || !dropdown) return;
+
+      trigger.addEventListener('click', () => {
+        const isOpen = dropdown.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', isOpen);
+      });
+
+      // Close on link click + update label
+      dropdown.querySelectorAll('.sub-nav__dropdown-link').forEach(link => {
+        link.addEventListener('click', () => {
+          activeLabel.textContent = link.textContent;
+          dropdown.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      // Update trigger label when scroll changes active section
+      const labelObserver = new MutationObserver(() => {
+        const active = document.querySelector('.sub-nav__link.active');
+        if (active && activeLabel) activeLabel.textContent = active.textContent;
+      });
+      document.querySelectorAll('.sub-nav__link').forEach(l =>
+        labelObserver.observe(l, { attributes: true, attributeFilter: ['class'] })
+      );
+    })();
+
+    // ── Sub-nav CTA hover ────────────────────────
+    (function() {
+      const cta = document.getElementById('sub-nav-cta');
+      if (!cta) return;
+      cta.addEventListener('mouseenter', () => {
+        cta.classList.remove('btn-leave');
+        cta.classList.add('btn-enter');
+      });
+      cta.addEventListener('mouseleave', () => {
+        cta.classList.remove('btn-enter');
+        cta.classList.add('btn-leave');
+      });
+    })();
+
+    // ── V-Card button hover ──────────────────────
+    const vcardBtn = document.querySelector('.hero__vcard-btn');
+    if (vcardBtn) {
+      vcardBtn.addEventListener('mouseenter', () => {
+        vcardBtn.classList.remove('btn-leave');
+        vcardBtn.classList.add('btn-enter');
+      });
+      vcardBtn.addEventListener('mouseleave', () => {
+        vcardBtn.classList.remove('btn-enter');
+        vcardBtn.classList.add('btn-leave');
+      });
+    }
+
+    // ── Loader ──────────────────────────────────
+    const loader = document.getElementById('loader');
+    // Total time: logo in at 0.3s + tagline in at 0.85s + hold + exit
+    const HOLD = 2200; // ms before exit starts
+    setTimeout(() => {
+      loader.classList.add('exit');
+      loader.addEventListener('animationend', () => {
+        loader.style.display = 'none';
+        // Hero animations start only AFTER loader is fully off screen
+        document.body.classList.add('loaded');
+      }, { once: true });
+    }, HOLD);
+
+    // Mobile footer accordion
+    document.querySelectorAll('.footer-nav-col__heading').forEach(heading => {
+      heading.addEventListener('click', () => {
+        const ul = heading.nextElementSibling;
+        if (!ul) return;
+        const isOpen = ul.style.display === 'flex';
+        ul.style.display = isOpen ? 'none' : 'flex';
+      });
+    });
+  </script>
+</body>
+</html>
